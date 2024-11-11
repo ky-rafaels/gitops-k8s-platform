@@ -61,7 +61,7 @@ singleBinary:
     enableStatefulSetAutoDeletePVC: true
     enabled: true
     size: 1Gi
-    storageClass: default
+    storageClass: standard
     annotations: {}
   extraEnv:
     # Keep a little bit lower than memory limits
@@ -93,7 +93,7 @@ chunksCache:
   persistence:
     enabled: false
     storageSize: 1G
-    storageClass: default
+    storageClass: standard
     mountPath: /data
 
 # Enable minio for storage
