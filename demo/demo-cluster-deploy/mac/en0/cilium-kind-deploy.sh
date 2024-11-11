@@ -83,8 +83,14 @@ nodes:
     hostPort: 70${twodigits}
 - role: worker
   image: ${kindest_node}
+  extraMounts:
+  - hostPath: ./shared-storage
+    containerPath: /var/local-path-provisioner
 - role: worker
   image: ${kindest_node}
+  extraMounts:
+  - hostPath: ./shared-storage
+    containerPath: /var/local-path-provisioner
 networking:
   disableDefaultCNI: true
   serviceSubnet: "10.$(echo $twodigits | sed 's/^0*//').0.0/16"
