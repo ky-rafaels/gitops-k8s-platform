@@ -1,0 +1,71 @@
+# ---
+# apiVersion: cert-manager.io/v1
+# kind: Certificate
+# metadata:
+#   name: equinox-com
+#   namespace: web-ui
+# spec:
+#   secretName: metron-com-tls
+#   duration: 2160h # 90d
+#   renewBefore: 360h # 15d
+#   subject:
+#     organizations:
+#       - equinox
+#   commonName: equinox.com
+#   isCA: false
+#   usages:
+#     - server auth
+#     - client auth
+#   dnsNames:
+#     - equinox.com
+#     - hubble.equinox.com
+#     - belltower.equinox.com
+#     - rabbitmq.equinox.com
+#     - argocd.equinox.com
+#   issuerRef:
+#     name: ca-issuer
+#     kind: ClusterIssuer
+#     group: cert-manager.io
+#   keystores:
+#     pkcs12:
+#       create: true
+#       passwordSecretRef:
+#         name: metron-keystore-pass
+#         key: password
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: equinox-com
+  namespace: web-ui
+spec:
+  secretName: metron-com-tls
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+  commonName: 'wildcard'
+  subject:
+    organizations:
+      - metron
+  isCA: false
+  usages:
+    - server auth
+    - client auth
+  dnsNames:
+    - '*.equinox.caci.com'
+    - 'keycloak.equinox.caci.com'
+    - 'belltower.equinox.caci.com'
+    - 'harbor.equinox.caci.com'
+    - 'gitlab.equinox.caci.com'
+  ipAddresses:
+    - 10.216.148.139
+    - 10.216.148.22
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+  keystores:
+    pkcs12:
+      create: true
+      passwordSecretRef:
+        name: metron-keystore-pass
+        key: password

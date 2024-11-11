@@ -1,0 +1,19 @@
+gateway:
+  name: "" 
+  revision: 1-18-3
+  service:
+    type: None
+  labels:
+    istio.io/rev: 1-18-3 
+    app: eastwestgateway
+  annotations:
+    proxy.istio.io/config: '{ "holdApplicationUntilProxyStarts": true }'
+    ad.datadoghq.com/discovery.check_names: '["istio"]'
+    ad.datadoghq.com/discovery.init_configs: '[{}]'
+    ad.datadoghq.com/discovery.instances: |
+        [
+          {
+            "istiod_endpoint": "http://%%host%%:15014/metrics",
+            "use_openmetrics": "true"
+          }
+        ]     

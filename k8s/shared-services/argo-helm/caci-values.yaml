@@ -1,0 +1,38 @@
+global:
+  image:
+    repository: harbor.csde.caci.com/docker.io/chainguard/argocd
+    tag: latest
+repoServer:
+  image:
+    repository: harbor.csde.caci.com/docker.io/chainguard/argocd-repo-server
+    tag: latest
+dex:
+  image:
+    repository: harbor.csde.caci.com/docker.io/chainguard/dex 
+    tag: latest
+redis:
+  image:
+    # -- Redis repository
+    repository: harbor.csde.caci.com/docker.io/chainguard/redis
+    # -- Redis tag
+    tag: latest
+server:
+  extraArgs:
+  - --insecure
+# configs:
+#   cm:
+#     dex.config: |
+#       connectors:
+#         - type: gitlab
+#           id: gitlab
+#           name: GitLab
+#           config:
+#             baseURL: https://gitlab....com
+#             clientID: aabbccddeeff00112233
+#             clientSecret: $dex.gitlab.clientSecret # Alternatively $<some_K8S_secret>:dex.github.clientSecret
+#             redirectURI: http://127.0.0.1:5556/dex/callback
+#             groups:
+#             - developers
+#             - infra
+#             # flag which will switch from using the internal GitLab id to the users handle (@mention) as the user id.
+#             useLoginAsID: false

@@ -1,0 +1,84 @@
+base:
+  defaultRevision: 1-22
+istiod:
+  # revisionTags: ["prod-canary"]
+  defaults:
+    revision: 1-22
+    global:
+      meshID: mesh1
+      network: network1
+      hub: 'harbor.csde.caci.com/docker.io/chainguard'
+      tag: latest
+      logAsJson: true
+      logging:
+        level: "default:info"
+      proxy:
+        image: "istio-proxy"
+        logLevel: warning
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 2000m
+            memory: 1024Mi
+        holdApplicationUntilProxyStarts: true
+    telemetry:
+      enabled: true
+    meshConfig:
+      rootNamespace: istio-system
+      trustDomain: cluster.local
+      accessLogFile: /dev/stdout
+      accessLogEncoding: JSON
+      enablePrometheusMerge: true
+      enableTracing: true
+      extensionProviders:
+      - name: "localtrace"
+        zipkin: 
+          service: zipkin.istio-system.svc.cluster.local
+          port: 9411
+          maxTagLength: 56
+      # - name: otel-tracing
+      #   opentelemetry:
+      #     port: 4317
+      #     service: open-telemetry-opentelemetry-collector.open-telemetry.svc.cluster.local
+      #     http:
+      #       path: "/v1/traces"
+      #       timeout: 5s
+      #     resource_detectors:
+      #       environment: {}
+      # defaultProviders:
+      #   tracing:
+      #   - localtrace
+      defaultConfig:
+        holdApplicationUntilProxyStarts: true
+        #   sampling: 100
+        # envoyMetricsService:
+        #   address: gloo-mesh-agent.gloo-mesh:9977
+        # envoyAccessLogService:
+        #   address: gloo-mesh-agent.gloo-mesh:9977
+        terminationDrainDuration: 10s
+        proxyMetadata:
+          ISTIO_META_DNS_CAPTURE: "true"
+          ISTIO_META_DNS_AUTO_ALLOCATE: "true"
+    pilot:
+      image: istio-pilot
+      autoscaleEnabled: true
+      autoscaleMin: 1
+      autoscaleMax: 5
+      replicaCount: 1
+      rollingMaxSurge: 100%
+      rollingMaxUnavailable: 25%
+      env:
+        PILOT_ENABLE_K8S_SELECT_WORKLOAD_ENTRIES: "false"
+        PILOT_SKIP_VALIDATE_TRUST_DOMAIN: "true"
+        AUTO_RELOAD_PLUGIN_CERTS: "true"
+        PILOT_DEBOUNCE_AFTER: 300ms
+        PILOT_DEBOUNCE_MAX: 10s
+        PILOT_PUSH_THROTTLE: "1000"
+        PILOT_FILTER_GATEWAY_CLUSTER_CONFIG: "false"
+        PILOT_ENABLE_ALPHA_GATEWAY_API: "true"
+      resources:
+        requests:
+          cpu: 500m
+          memory: 750Mi

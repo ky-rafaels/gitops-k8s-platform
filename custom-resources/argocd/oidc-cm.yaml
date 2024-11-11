@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+data:
+  url: https://argocd.equinox.caci.com
+  oidc.config: |
+    name: Keycloak
+    issuer: https://keycloak.equinox.caci.com/realms/belltower
+    clientID: argocd
+    clientSecret: $oidc.keycloak.clientSecret
+    requestedScopes: ["openid", "profile", "email", "groups"]
+    rootCA: |
+      -----BEGIN CERTIFICATE-----
+      MIIDqjCCApKgAwIBAgIRAMS7QQun3oTm68J+nouEGfAwDQYJKoZIhvcNAQELBQAw
+      IjEPMA0GA1UEChMGbWV0cm9uMQ8wDQYDVQQDEwZtZXRyb24wHhcNMjQxMDAyMTQ0
+      NjQ2WhcNMjQxMjMxMTQ0NjQ2WjAiMQ8wDQYDVQQKEwZtZXRyb24xDzANBgNVBAMT
+      Bm1ldHJvbjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALbhDB0VQVLi
+      buxNYBI1NZVAzukpiQuuoiGWh+hoGMGW/56rlfswQ/eyvk7OK70DjQ5lh3UJGIx0
+      8x6ZOfbDiA2RHbQ7CLgbrz4qylKEpecJ+/UyYYnZuuASIaSHbgtQUp1bnwNpa8k/
+      X00QyVe0/s9kK2vB9mVfKilrvO0GPiZNEyEB4IYWIbRwN5s0SwIlfmcRwwtl5Hls
+      jOq1PbIFzGO9aA7yIVMgLLYC1tOo3G4GYW7ZbZunyeCk/vXIoQufFcO0liT09UkT
+      OBzHw+Cfv+f28choKv2cH1kLA6cyS6zvyy+bC2ZWLVuiG+pq55nwZV4mqITsNyKd
+      uiDiAI64AQsCAwEAAaOB2jCB1zAOBgNVHQ8BAf8EBAMCAqQwDwYDVR0TAQH/BAUw
+      AwEB/zAdBgNVHQ4EFgQUnflooMxH/VKHsxG2eYV/O5CaULIwgZQGA1UdEQSBjDCB
+      iYISKi5lcXVpbm94LmNhY2kuY29tghpiZWxsdG93ZXIuZXF1aW5veC5jYWNpLmNv
+      bYIZa2V5Y2xvYWsuZXF1aW5veC5jYWNpLmNvbYIXZ2l0bGFiLmVxdWlub3guY2Fj
+      aS5jb22CF2hhcmJvci5lcXVpbm94LmNhY2kuY29thwQK2JSLhwQK2JQWMA0GCSqG
+      SIb3DQEBCwUAA4IBAQA8zTdO7xkTuFoHXutoZGfM8XtLl0mi5f7f51VYC77CjVtn
+      yy7Ng9NiyTEXYPvP/4u4TqIcNWCdApUwsjyCF7/bWDxgewzAiRV1f+1Noy4vwGcO
+      JN3wbUszFTCyBZy62SPm+syXQ3YLoIy3Pv+UA6uubGwz1+Cc4hEd0zgN3nwp6dxS
+      mO31S4zjVxMovFcMfGHWhl+YhPklsxIKppIm15Zll7YfojrRr74dziBwvbQBB52O
+      JAcGx6R5UvcsUFW3wH1z9RjXKHNNVsOul++vDvWoxDqpocBhhTO8mVSHmGH2t95i
+      W3dggytG07HWed1/vJvnEjkvRzTaX7yk4dDTor/0
+      -----END CERTIFICATE-----

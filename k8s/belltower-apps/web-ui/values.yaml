@@ -1,0 +1,170 @@
+
+replicaCount: 1
+
+image:
+  repository: harbor.csde.caci.com/equinox/webui
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "corretto-11-jdk"
+
+webUI:
+  config:
+    env:
+    - name: KEYSTORE_PASS
+      valueFrom:
+        secretKeyRef:
+          name: metron-keystore-pass
+          key: password
+    command: ["java"]
+    args: 
+    - '-Djavax.net.ssl.keyStorePassword=$(KEYSTORE_PASS)'
+    - '-Djavax.net.ssl.trustStorePassword=$(KEYSTORE_PASS)'
+    - '-Djavax.net.ssl.keyStore=/var/run/secrets/keystores/keystore.p12'
+    - '-Djavax.net.ssl.trustStore=/var/run/secrets/keystores/truststore.p12'
+    - '-cp'
+    - '/maven/*'
+    - 'com.metsci.belltower.template.web.CoffeeShopWebServer'
+    - '--spring.profiles.active=kubernetes'
+    - '--spring.config.location=file:/var/run/secrets/config/application.yaml'
+
+imagePullSecrets:
+- name: regcred
+nameOverride: ""
+fullnameOverride: "web-ui"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  http:
+    port: 8080
+    targetPort: 8080
+  https:
+    port: 8443
+    targetPort: 8443
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+istioIngress:
+  enabled: true
+  gateways: 
+  - web-gateway
+  annotations: {}
+  hosts:
+  - belltower.metron.com
+  http:
+  - match:
+      - uri:
+          prefix: /
+    name: webui-route
+    route:
+    - destination:
+        host: web-ui.web-ui.svc.cluster.local
+        port:
+          number: 8080
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+        - "belltower.metron.com"
+    route:
+    - destination:
+        host: web-ui.web-ui.svc.cluster.local
+        port:
+          number: 8443
+
+resources: 
+  requests:
+    cpu: 100m
+    memory: 800Mi
+  limits:
+    cpu: 250m
+    memory: 2000Mi
+
+readinessProbe:
+  tcpSocket:
+    port: 8443
+  failureThreshold: 5
+  initialDelaySeconds: 15
+  periodSeconds: 10
+livenessProbe:
+  tcpSocket:
+    port: 8443
+  failureThreshold: 5
+  initialDelaySeconds: 15
+  periodSeconds: 10
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 75
+  targetMemoryUtilizationPercentage: 75
+
+# Additional volumes on the output Deployment definition.
+volumes:
+- name: application-override
+  configMap:
+    name: application-override
+- name: ipc-config
+  configMap:
+    name: ipc-config
+- name: keystore-password
+  secret:
+    secretName: metron-keystore-pass
+- name: belltower-certs
+  secret:
+    secretName: metron-com-tls
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+volumeMounts:
+- name: application-override
+  mountPath: /var/run/secrets/config
+- name: belltower-certs
+  mountPath: /var/run/secrets/keystores
+- name: ipc-config
+  mountPath: /var/run/secrets/config/ipc
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

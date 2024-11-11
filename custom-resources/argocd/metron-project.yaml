@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  creationTimestamp: "2024-08-02T15:26:43Z"
+  generation: 1
+  name: default
+  namespace: argocd
+  resourceVersion: "878956"
+  uid: 88ee4bf3-e2c6-42d0-ba76-e67504a0327c
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  sourceRepos:
+  - '*'
+  roles:   
+  - name: read-only
+    description: Read-only privileges to metron 
+    policies:
+    - p, proj:default:read-only, applications, get, default/*, allow
+    groups:
+    - metron
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: metron 
+  namespace: argocd
+spec:
+  roles:
+  # A role which provides read-only access to all applications in the project
+  - name: read-only
+    description: Read-only privileges to metron 
+    policies:
+    - p, proj:metron:read-only, applications, get, metron/*, allow
+    groups:
+    - metron

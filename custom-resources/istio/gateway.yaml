@@ -1,0 +1,33 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: gateway
+  namespace: httpbin
+  labels:
+    app: istio-ingressgateway
+  annotations: 
+    service.beta.kubernetes.io/aws-load-balancer-internal: "true"
+spec:
+  gatewayClassName: istio
+  listeners:
+  - name: passthrough-tls
+    protocol: TLS
+    port: 443
+    tls:
+      mode: Passthrough
+    hostname: 'belltower.equinox.caci.com'
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https
+    protocol: HTTPS
+    port: 443
+    hostname: '*.equinox.caci.com'
+    tls:
+      mode: Terminate
+      certificateRefs:
+      - name: wildcard-tls
+    allowedRoutes:
+      namespaces:
+        from: All

@@ -1,0 +1,35 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard
+  namespace: httpbin
+spec:
+  secretName: wildcard-tls
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+  commonName: 'wildcard'
+  subject:
+    organizations:
+      - metron
+  isCA: false
+  privateKey:
+    algorithm: RSA
+    encoding: PKCS1
+    size: 2048
+  usages:
+    - server auth
+    - client auth
+  dnsNames:
+    - '*.equinox.caci.com'
+    - 'keycloak.equinox.caci.com'
+    - 'belltower.equinox.caci.com'
+    - 'harbor.equinox.caci.com'
+    - 'gitlab.equinox.caci.com'
+  ipAddresses:
+    - 10.216.148.139
+    - 10.216.148.22
+  issuerRef:
+    name: ca-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io

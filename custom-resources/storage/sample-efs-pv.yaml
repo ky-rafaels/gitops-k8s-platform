@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  namespace: keycloak
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Recycle
+  storageClassName: efs-csi-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-0e511c23beef86275::fsap-025aede2a99b9abcf

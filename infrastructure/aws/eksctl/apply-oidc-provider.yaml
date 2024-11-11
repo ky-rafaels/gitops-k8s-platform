@@ -1,0 +1,14 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: cluster-deploy-test-3
+  region: us-gov-west-1
+
+identityProviders:
+  - name: authentik
+    type: oidc
+    issuerUrl: https://internal-a7c656b670fa34fc89d6ba5f1d85dc99-834056913.us-gov-west-1.elb.amazonaws.com/realms/master/ 
+    clientId: kube-apiserver
+    usernameClaim: email
+    groupsClaim: groups

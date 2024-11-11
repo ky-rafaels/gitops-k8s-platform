@@ -1,0 +1,1 @@
+kubectl run curl -it --rm --image=harbor.csde.caci.com/docker.io/curlimages/curl -- sh

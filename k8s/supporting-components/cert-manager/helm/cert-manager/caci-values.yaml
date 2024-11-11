@@ -1,0 +1,19 @@
+crds:
+  enabled: true
+image:
+  repository: harbor.csde.caci.com/docker.io/chainguard/cert-manager-controller
+  tag: latest
+  pullPolicy: IfNotPresent
+webhook:
+  image:
+    repository: harbor.csde.caci.com/docker.io/chainguard/cert-manager-webhook
+    tag: latest
+    pullPolicy: IfNotPresent
+cainjector:
+  enabled: true
+  image: 
+    repository: harbor.csde.caci.com/docker.io/chainguard/cert-manager-cainjector
+    tag: latest
+    pullPolicy: IfNotPresent
+startupapicheck:
+  enabled: false

@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: rabbitmq
+  namespace: argocd
+spec:
+  generators:
+    - clusters: {} 
+  template:
+    metadata:
+      name: 'rabbitmq'
+    spec:
+      project: default
+      source: 
+        repoURL: 'https://gitlab.csde.caci.com/Equinox/belltower-deploy.git' 
+        targetRevision: gitlab-154
+        path: k8s/belltower-apps/rabbitmq/helm/rabbitmq
+        helm:
+          releaseName: rabbitmq
+          ignoreMissingValueFiles: true
+          valueFiles:
+            - "values.yaml"
+            - caci-values.yaml
+      destination:
+        name: "in-cluster"
+        namespace: 'rabbitmq'
+      syncPolicy:
+        automated:
+          prune: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true

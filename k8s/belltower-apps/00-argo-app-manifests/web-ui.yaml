@@ -1,0 +1,33 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: web-ui
+  namespace: argocd
+spec:
+  generators:
+    - clusters: {} 
+  template:
+    metadata:
+      name: 'web-ui'
+    spec:
+      project: default
+      source: 
+        repoURL: 'https://gitlab.csde.caci.com/Equinox/belltower-deploy.git' 
+        targetRevision: main
+        path: k8s/belltower-apps/web-ui
+        helm:
+          releaseName: web-ui
+          ignoreMissingValueFiles: true
+          valueFiles:
+            - values.yaml
+            - values-{{ cluster }}.yaml
+      destination:
+        name: "in-cluster"
+        namespace: 'web-ui'
+      syncPolicy:
+        automated:
+          prune: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true

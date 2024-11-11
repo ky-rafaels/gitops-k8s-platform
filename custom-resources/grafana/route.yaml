@@ -1,0 +1,21 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana
+  namespace: istio-system
+spec:
+  parentRefs:
+  - name: gateway
+    namespace: httpbin
+    sectionName: https
+  hostnames: 
+  - 'grafana.equinox.caci.com'
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: grafana
+      port: 3000

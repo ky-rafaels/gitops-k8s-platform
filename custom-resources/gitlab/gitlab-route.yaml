@@ -1,0 +1,39 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: gitlab
+  namespace: gitlab
+spec:
+  parentRefs:
+  - name: gateway
+    namespace: httpbin
+    sectionName: https
+  hostnames: 
+  - 'gitlab.equinox.caci.com'
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: gitlab-webservice-default
+      port: 8080
+# ---
+# apiVersion: gateway.networking.k8s.io/v1alpha2
+# kind: TLSRoute
+# metadata:
+#   name: harbor 
+#   namespace: harbor
+# spec:
+#   parentRefs:
+#   - name: gateway
+#     namespace: httpbin
+#     sectionName: passthrough-tls
+#   hostnames: 
+#   - 'harbor.equinox.caci.com'
+#   rules:
+#   - backendRefs:
+#     - name: harbor
+#       namespace: harbor
+#       port: 443

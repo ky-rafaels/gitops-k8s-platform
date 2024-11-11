@@ -1,0 +1,26 @@
+---
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: target-cluster-1
+  region: us-gov-west-1
+
+vpc:
+  clusterEndpoints:
+    privateAccess: true
+    publicAccess: false
+  subnets:
+    private:
+      us-gov-west-1a: { id: subnet-0b4da1d79a33ba266 }
+      us-gov-west-1b: { id: subnet-0f28d7dcda03ad013 }
+
+managedNodeGroups:
+  - name: ng-1-target-workers
+    labels: { role: workers }
+    instanceType: t3.xlarge
+    desiredCapacity: 2
+    privateNetworking: true
+    ssh:
+      allow: true
+      publicKeyPath: "~/.ssh/equinox-shared.pub"

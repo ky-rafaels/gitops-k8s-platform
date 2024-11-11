@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - grafana.yaml
+  - prometheus.yaml
+  # - jaeger.yaml
+
+images:
+- name: docker.io/jimmidyson/configmap-reload:v0.8.0
+  newName: harbor.csde.caci.com/docker.io/jimmidyson/configmap-reload
+  newTag: v0.8.0
+- name: docker.io/prom/prometheus:v2.41.0
+  newName: harbor.csde.caci.com/docker.io/chainguard/prometheus
+  newTag: latest
+- name: docker.io/grafana/grafana:9.5.5
+  newName: harbor.csde.caci.com/docker.io/chainguard/grafana
+  newTag: latest
+# - name: docker.io/jaegertracing/all-in-one:1.56
+#   newName: harbor.csde.caci.com/docker.io/jaegertracing/all-in-one
+#   newTag: "1.56"

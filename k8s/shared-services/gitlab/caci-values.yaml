@@ -1,0 +1,230 @@
+global:
+  image: 
+    registry: harbor.csde.caci.com/registry.gitlab.com
+  certificates:
+    image:
+      repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/certificates
+      tag: "" 
+    customCAs:
+    - secret: ca-cert
+      # keys:
+      # - ca.crt
+  edition: ce # community edition
+  # gitlabVersion: "v17.2.2"
+  hosts: 
+    domain: equinox.caci.com
+    kas:
+      name: gitlab.equinox.caci.com
+  ingress:
+    # enabled: false
+    configureCertmanager: false
+    class: istio
+    tls:
+      external: true
+      # enabled: true
+      # secret: wildcard-tls
+  kubectl:
+    image:
+      repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/kubectl
+      tag: ""
+  gitlabBase:
+    image:
+      repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-base
+      tag: "" 
+  appConfig:
+    enableUsagePing: true
+    enableSeatLink: true
+    defaultCanCreateGroup: true
+    usernameChangingEnabled: false
+    omniauth:
+      enabled: true
+      autoSignInWithProvider: openid_connect
+#      syncProfileFromProvider: []
+      syncProfileAttributes: [email]
+      allowSingleSignOn: openid_connect
+      blockAutoCreatedUsers: false
+      # dependencyProxy: <>
+#      autoLinkLdapUser: false
+#      autoLinkSamlUser: false
+#      autoLinkUser: []
+#      externalProviders: []
+#      allowBypassTwoFactor: []
+      providers:
+      - secret: gitlab-keycloak
+        key: oidc-connect
+    defaultProjectsFeatures:
+      issues: true
+      mergeRequests: true
+      wiki: true
+      snippets: true
+      builds: true
+  kas:
+    enabled: true
+
+  gitaly:
+    enabled: true
+
+  praefect:
+    enabled: false
+
+  grafana:
+    enabled: false
+
+  psql:
+    host: gitlab-postgres-db-postgresql
+    port: 5432
+    database: gitlabhq_production
+    username: gitlab
+    password:
+      useSecret: true
+      secret: gitlab-postgresql-password
+      key: postgresql-password
+    main: {}
+    ci: {}
+
+minio: 
+  image: harbor.csde.caci.com/docker.io/chainguard/minio
+  imageTag: latest
+  minioMc: 
+    image: harbor.csde.caci.com/docker.io/minio/mc
+    # tag: latest 
+  credentials: {}
+  persistence:
+    storageClass: efs-csi-sc
+
+upgradeCheck:
+  enabled: false
+
+certmanager:
+  installCRDs: false
+  rbac:
+    create: false
+  install: false
+
+certmanager-issuer:
+  install: false 
+
+nginx-ingress:
+  enabled: false
+
+prometheus:
+  install: false
+
+redis:
+  master:
+    persistence:
+      enabled: true
+      storageClass: efs-csi-sc
+      size: 8Gi
+  image:
+    registry: harbor.csde.caci.com/docker.io
+    # repository: chainguard/redis
+    # tag: latest 
+  install: true
+  auth:
+    existingSecret: gitlab-redis-secret
+    existingSecretKey: redis-password
+    usePasswordFiles: true
+  architecture: standalone
+  cluster:
+    enabled: false
+  metrics:
+    enabled: false
+
+postgresql:
+  install: false
+
+shared-secrets:
+  enabled: true
+  selfsign:
+    image:
+      repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/cfssl-self-sign
+      # tag: 1.6.1
+
+gitlab-runner:
+  install: false
+
+registry:
+  image:
+    repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-container-registry
+    tag: "v17.2.2" 
+
+# Subcharts here
+gitlab:
+  global:
+    communityImages:
+      migrations:
+        repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-toolbox-ce
+      sidekiq:
+        repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-sidekiq-ce
+      toolbox:
+        repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-toolbox-ce
+      webservice:
+        repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-webservice-ce
+      workhorse:
+        repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-workhorse-ce
+  webservice:
+    tls:
+      enabled: true
+      secretName: wildcard-tls
+    workhorse:
+      trustedCIDRsForXForwardedFor: 10.216.148.0/24
+      trustedCIDRsForPropagation: 10.216.148.0/24
+      tls:
+        verify: false
+        caSecretName: ca-cert
+  gitaly:
+    image: 
+      repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitaly
+      tag: ""
+    persistence:
+      enabled: true
+      storageClass: efs-csi-sc 
+      accessMode: ReadWriteOnce
+      size: 40Gi
+      matchLabels: {}
+      matchExpressions: []
+      # subPath:
+      annotations: {}
+    resources:
+      requests:
+        cpu: 500m
+        memory: 8G
+  redis:
+    persistence:
+      enabled: true
+      storageClass: ebs-csi-sc
+      size: 8Gi
+  gitlab-exporter:
+    image: 
+      repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-exporter
+      tag: ""
+  gitlab-shell:
+    image: 
+      repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-shell
+      tag: ""
+    enabled: true
+    sshDaemon: gitlab-sshd
+    config:
+      proxyProtocol: true
+    resources:
+      requests:
+        memory: 40Mi
+  kas:
+    image: 
+      repository: harbor.csde.caci.com/registry.gitlab.com/gitlab-org/build/cng/gitlab-kas
+    # enterpriseImages:
+    # # Default repositories used to pull Gitlab Enterprise Edition images.
+    # # See the image.repository and workhorse.repository template helpers.
+    # migrations:
+    #   repository: registry.gitlab.com/gitlab-org/build/cng/gitlab-toolbox-ee
+    # sidekiq:
+    #   repository: registry.gitlab.com/gitlab-org/build/cng/gitlab-sidekiq-ee
+    # toolbox:
+    #   repository: registry.gitlab.com/gitlab-org/build/cng/gitlab-toolbox-ee
+    # webservice:
+    #   repository: registry.gitlab.com/gitlab-org/build/cng/gitlab-webservice-ee
+    # workhorse:
+    #   repository: registry.gitlab.com/gitlab-org/build/cng/gitlab-workhorse-ee
+    # geo-logcursor:
+    #   repository: registry.gitlab.com/gitlab-org/build/cng/gitlab-geo-logcursor

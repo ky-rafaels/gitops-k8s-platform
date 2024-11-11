@@ -1,0 +1,112 @@
+apiVersion: v1
+data:
+  application.yaml: |+
+    # enable dump of autoconfiguration and import ipc config
+    debug: true
+    
+    spring:
+      config:
+        import: "ipc/ipc.yaml"
+
+    # note that multi-document yaml files can be used just to group properties
+    # and don't need to specify an activation, and an activation doesn't need to be unique
+    ---
+    # sprindoc configuration
+    # where to host the swagger ui and openapi spec
+    # primarilly listed to document where they are,
+    # but are also shorter than the defaults for convenience
+    springdoc:
+      swagger-ui:
+        path: /swagger.html
+        csrf:
+          enabled: true
+        # remove the need to click on try it out buttons
+        tryItOutEnabled: true
+      api-docs:
+        path: /openapi.yaml
+      default-produces-media-type: application/json
+      # These aren't spring-doc native properties, but it is a convenient place to put them.
+      # In particular it is much nicer to read the description out of a file
+      # than deal with java not having multiline strings.
+      # The @key@ syntax will be replaced with maven properties.
+      # Note that this is not the normal syntax for maven resource filtering,
+      # spring-boot-parent has configured the plugin to deconflict with spring's internal
+      # ${key} syntax to derive properties from other properties.
+      title: "@project.name@"
+      description: |
+        @project.description@
+      version: "@project.version@"
+    ---
+    # rsocket configuration
+    spring:
+      rsocket:
+        server:
+          transport: websocket
+          mapping-path: /rsocket
+    ---
+    # host static files configuration
+    # this only really makes sense inside webui container
+    # but is simplier to always configure it
+    spring:
+      web:
+        resources:
+          staticLocations: "file:/public,classpath:/public"
+    ---
+    # keycloak default configuration (assuming localhost)
+    # TODO keycloak stuff really feels like it should be externalized
+    spring:
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              jwk-set-uri: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/certs
+          client:
+            registration:
+              belltower-webclient:
+                client-id: belltower-client
+                client-secret: Ek3OeSvHeY9uCdbRKjUYRR2lkgxIb4Fo
+                scope: openid, profile, roles
+                authorization-grant-type: authorization_code
+                # redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+                redirect-uri: 'https://belltower.equinox.caci.com/login/oauth2/code/{registrationId}'
+            provider:
+              belltower-webclient:
+                authorization-uri: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/auth
+                token-uri: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/token
+                user-info-uri: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/userinfo
+                user-name-attribute: preferred_username
+                jwk-set-uri: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/certs
+                configuration-metadata:
+                  end_session_endpoint: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/logout
+    ---
+    spring:
+      config:
+        activate:
+          on-profile: kubernetes
+      security:
+        oauth2:
+          resourceserver:
+            jwt:
+              jwk-set-uri: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/certs
+          client:
+            provider:
+              belltower-webclient:
+                # keycloak will normally complain if authorizaton-uri and token-uri have different host:port
+                # to configure that it is expected, the realm's frontend url is set to http://localhost:8180
+                token-uri: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/token
+                user-info-uri: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/userinfo
+                jwk-set-uri: https://keycloak.equinox.caci.com/realms/belltower/protocol/openid-connect/certs
+    server:
+      port: 8443
+      ssl:
+        enabled: true
+        key-store: "/var/run/secrets/keystores/keystore.p12"
+        trust-store: "/var/run/secrets/keystores/truststore.p12"
+        key-store-password: "Password123!"
+        trust-store-password: "Password123!"
+        key-alias: 1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: application-override
+  namespace: web-ui

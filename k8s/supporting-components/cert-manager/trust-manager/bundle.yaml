@@ -1,0 +1,14 @@
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: csde.caci.com 
+  namespace: cert-manager
+spec:
+  sources:
+  - useDefaultCAs: true
+  - configMap:
+      name: csde-ca
+      key: ca-harbor.crt
+  target:
+    configMap:
+      key: "bundle.pem"

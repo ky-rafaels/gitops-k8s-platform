@@ -1,0 +1,26 @@
+#Git
+*.orig
+
+# VsCode
+.vscode/
+
+# Mac
+.DS_Store
+# zipped files
+*.gz
+*.log
+*.zip
+
+# sphinx build folder
+_build
+public
+
+## Python 
+venv
+
+# terraform
+*.tfstate
+*.terraform.*
+*.terraform/
+
+# helm

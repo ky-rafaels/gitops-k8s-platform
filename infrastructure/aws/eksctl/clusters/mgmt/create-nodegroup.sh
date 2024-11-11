@@ -1,0 +1,14 @@
+eksctl create nodegroup \
+  --cluster cluster-deploy-test-3 \
+  --region us-gov-west-1 \
+  --name ng-1-workers \
+  --timeout 35m0s \
+  --node-private-networking \
+  --node-type t3.xlarge \
+  --nodes 2 \
+  --nodes-min 2 \
+  --nodes-max 3 \
+  --ssh-access \
+  --managed=true \
+  --cfn-disable-rollback \
+  --ssh-public-key ~/.ssh/equinox-shared.pub

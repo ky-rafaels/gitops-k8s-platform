@@ -1,0 +1,134 @@
+---
+global:
+  registry: harbor.csde.caci.com/docker.io
+# serviceAccount:
+#   annotations:
+#     "eks.amazonaws.com/role-arn": "arn:aws-us-gov:iam::175199271354:role/LokiStorage-cluster-deploy-test-3"
+loki:
+  limits_config:
+    allow_structured_metadata: true
+  commonConfig:
+    replication_factor: 1
+  schemaConfig:
+    configs:
+      - from: 2024-04-01
+        store: tsdb
+        object_store: filesystem
+        schema: v13
+        index:
+          prefix: loki_index_
+          period: 24h
+  auth_enabled: false
+  storage:
+    type: 'filesystem'
+    # bucketNames:
+    #   chunks: loki-chunks
+    #   ruler: loki-ruler
+    #   admin: loki-admin
+    # s3:
+    #   region: us-gov-west-1
+  # storage_config:
+  #   tsdb_shipper:
+  #     active_index_directory: /loki/index
+  #     cache_location: /loki/index_cache
+  #     cache_ttl: 24h 
+    # aws: s3://us-gov-west-1
+    # bucketNames: loki-cluster-logs
+  ingester:
+    chunk_encoding: snappy
+  tracing:
+    enabled: true
+  querier:
+    # Default is 4, if you have enough memory and CPU you can increase, reduce if OOMing
+    max_concurrent: 2
+  image:
+    registry: harbor.csde.caci.com/docker.io
+    repository: chainguard/loki
+    tag: latest
+
+lokiCanary:
+  enabled: true
+  image:
+    registry: harbor.csde.caci.com/docker.io
+
+gateway:
+  enabled: false
+
+deploymentMode: SingleBinary
+singleBinary:
+  replicas: 1
+  persistence:
+    enableStatefulSetAutoDeletePVC: true
+    enabled: true
+    size: 10Gi
+    storageClass: efs-csi-sc
+    annotations: {}
+  extraEnv:
+    # Keep a little bit lower than memory limits
+    - name: GOMEMLIMIT
+      value: 3750MiB
+memcached:
+  image:
+    # -- Memcached Docker image repository
+    repository: harbor.csde.caci.com/docker.io/chainguard/memcached
+    # -- Memcached Docker image tag
+    tag: latest
+    # -- Memcached Docker image pull policy
+    pullPolicy: IfNotPresent
+
+memcachedExporter:
+  # -- Whether memcached metrics should be exported
+  enabled: true
+  image:
+    repository: harbor.csde.caci.com/docker.io/chainguard/memcached-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests: {}
+    limits: {}
+
+chunksCache:
+  # default is 500MB, with limited memory keep this smaller
+  writebackSizeLimit: 10MB
+  persistence:
+    enabled: false
+    storageSize: 10G
+    storageClass: efs-csi-sc
+    mountPath: /data
+
+# Enable minio for storage
+minio:
+  enabled: false
+  image:
+    repository: harbor.csde.caci.com/docker.io/chainguard/minio
+    tag: latest
+  mcImage:
+    repository: harbor.csde.caci.com/docker.io/chainguard/minio-client
+    tag: latest
+
+# Zero out replica counts of other deployment modes
+backend:
+  replicas: 0
+read:
+  replicas: 0
+write:
+  replicas: 0
+
+ingester:
+  replicas: 0
+querier:
+  replicas: 0
+queryFrontend:
+  replicas: 0
+queryScheduler:
+  replicas: 0
+distributor:
+  replicas: 0
+compactor:
+  replicas: 0
+indexGateway:
+  replicas: 0
+bloomCompactor:
+  replicas: 0
+bloomGateway:
+  replicas: 0

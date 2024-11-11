@@ -1,0 +1,15 @@
+global:
+  image:
+    repository: docker.io/chainguard/argocd
+    tag: latest
+server:
+  service:
+    type: LoadBalancer
+repoServer:
+  image:
+    repository: docker.io/chainguard/argocd-repo-server
+    tag: latest
+dex:
+  image:
+    repository: docker.io/chainguard/dex 
+    tag: latest

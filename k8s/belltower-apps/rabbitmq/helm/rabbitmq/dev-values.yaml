@@ -1,0 +1,31 @@
+image:
+  registry: harbor.csde.caci.com/docker.io
+  repository: chainguard/rabbitmq
+  tag: latest
+  digest: ""
+
+auth:
+  username: guest
+  password: CHANGEME
+extraSecrets:
+  load-definition:
+    load_definition.json: |
+      {
+        "users": [
+          {
+            "name": "{{ .Values.auth.username }}",
+            "password": "{{ .Values.auth.password }}",
+            "tags": "administrator"
+          }
+        ],
+        "vhosts": [
+          {
+            "name": "/"
+          }
+        ]
+      }
+loadDefinition:
+  enabled: true
+  existingSecret: load-definition
+extraConfiguration: |
+  load_definitions = /app/load_definition.json

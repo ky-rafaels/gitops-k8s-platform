@@ -1,0 +1,66 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: httpbin
+  namespace: httpbin
+spec:
+  parentRefs:
+  - name: gateway
+    # namespace: httpbin
+    sectionName: https
+  hostnames: 
+  - 'httpbin.equinox.caci.com'
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: httpbin
+      port: 8000
+# ---
+# kind: Role
+# apiVersion: rbac.authorization.k8s.io/v1
+# metadata:
+#   namespace: httpbin
+#   name: ingress-gateway-secrets-reader
+# rules:
+# - apiGroups: [""]
+#   resources: ["secrets"]
+#   verbs:
+#   - create
+#   - get
+#   - watch
+#   - list
+#   - update
+#   - delete
+# ---
+# kind: RoleBinding
+# apiVersion: rbac.authorization.k8s.io/v1
+# metadata:
+#   name: ingress-gateway-secrets-reader
+#   namespace: httpbin 
+# subjects:
+# - kind: ServiceAccount
+#   name: gateway-istio
+#   namespace: httpbin
+# roleRef:
+#   kind: Role
+#   name: ingress-gateway-secrets-reader
+#   apiGroup: rbac.authorization.k8s.io
+# # ---
+# # apiVersion: gateway.networking.k8s.io/v1beta1
+# # kind: ReferenceGrant
+# # metadata:
+# #   name: httpbin
+# #   namespace: httpbin
+# # spec:
+# #   from:
+# #     - group: gateway.networking.k8s.io
+# #       kind: HTTPRoute
+# #       namespace: istio-ingress
+# #   to:
+# #     - group: ""
+# #       kind: Service
+# #       name: httpbin

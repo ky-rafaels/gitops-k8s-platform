@@ -1,0 +1,35 @@
+volumePermissions:
+  enabled: true 
+  image: 
+    registry: harbor.csde.caci.com/docker.io
+    # repository: bitnami/os-shell
+    # tag: 12-debian-12-r26
+primary:
+  persistence:
+    enabled: true
+    storageClass: ebs-csi-sc
+    size: 15Gi
+  persistentVolumeClaimRetentionPolicy:
+    enabled: true
+    whenScaled: Retain
+    whenDeleted: Delete
+  resources:
+    requests:
+      cpu: 1
+      memory: 512Mi
+    limits:
+      cpu: 2
+      memory: 1024Mi
+enabled: true
+auth:
+  username: gitlab
+  database: gitlabhq_production
+  existingSecret: "gitlab-postgresql-password"
+  secretKeys:
+    adminPasswordKey: postgresql-postgres-password
+    userPasswordKey: postgresql-password
+architecture: standalone
+image:
+  registry: harbor.csde.caci.com/docker.io
+  repository: chainguard/postgres-helm-compat
+  tag: latest

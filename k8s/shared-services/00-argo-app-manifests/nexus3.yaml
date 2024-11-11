@@ -1,0 +1,32 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nexus3
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: nexus3
+    server: 'https://kubernetes.default.svc'
+  source:
+    repoURL: 'https://gitlab.csde.caci.com/Equinox/belltower-deploy.git'
+    path: k8s/shared-services/nexus3
+    targetRevision: belltower-deploy#190
+    helm:
+      valueFiles:
+      - caci-values.yaml
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+    managedNamespaceMetadata: 
+      labels: # The labels to set on the application namespace
+        istio.io/rev: 1-22
+      annotations: # The annotations to set on the application namespace
