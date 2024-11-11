@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - grafana.yaml
   - prometheus.yaml
+  - route.yaml
   # - jaeger.yaml
 
 images:
