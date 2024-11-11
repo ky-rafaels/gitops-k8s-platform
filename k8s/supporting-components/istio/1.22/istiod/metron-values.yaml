@@ -1,8 +1,0 @@
-istiod:
-  defaults:
-    revision: 1-22
-    global:
-      meshID: mesh1
-      network: network1
-      hub: 'docker.io/chainguard'
-      tag: latest
