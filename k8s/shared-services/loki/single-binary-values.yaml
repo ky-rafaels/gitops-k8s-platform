@@ -60,8 +60,8 @@ singleBinary:
   persistence:
     enableStatefulSetAutoDeletePVC: true
     enabled: true
-    size: 10Gi
-    storageClass: efs-csi-sc
+    size: 1Gi
+    storageClass: default
     annotations: {}
   extraEnv:
     # Keep a little bit lower than memory limits
@@ -92,8 +92,8 @@ chunksCache:
   writebackSizeLimit: 10MB
   persistence:
     enabled: false
-    storageSize: 10G
-    storageClass: efs-csi-sc
+    storageSize: 1G
+    storageClass: default
     mountPath: /data
 
 # Enable minio for storage
