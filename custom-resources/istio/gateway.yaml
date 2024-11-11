@@ -11,19 +11,10 @@ metadata:
 spec:
   gatewayClassName: istio
   listeners:
-  - name: passthrough-tls
-    protocol: TLS
-    port: 443
-    tls:
-      mode: Passthrough
-    hostname: 'belltower.equinox.caci.com'
-    allowedRoutes:
-      namespaces:
-        from: All
   - name: https
     protocol: HTTPS
     port: 443
-    hostname: '*.equinox.caci.com'
+    hostname: '*.ky-rafaels.com'
     tls:
       mode: Terminate
       certificateRefs:

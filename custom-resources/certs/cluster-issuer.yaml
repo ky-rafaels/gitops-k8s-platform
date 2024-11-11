@@ -24,14 +24,11 @@ spec:
     encoding: PKCS1
     size: 2048
   dnsNames:
-    - '*.equinox.caci.com'
-    - 'belltower.equinox.caci.com'
-    - 'keycloak.equinox.caci.com'
-    - 'gitlab.equinox.caci.com'
-    - 'harbor.equinox.caci.com'
-  ipAddresses:
-    - 10.216.148.139
-    - 10.216.148.22
+    - '*.ky-rafaels.com'
+    - 'grafana.ky-rafaels.com'
+    - 'hubble.ky-rafaels.com'
+    - 'keycloak.ky-rafaels.com'
+    - 'httpbin.ky-rafaels.com'
   issuerRef:
     name: selfsigned-issuer
     kind: ClusterIssuer

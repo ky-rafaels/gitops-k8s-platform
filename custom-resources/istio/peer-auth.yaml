@@ -2,8 +2,8 @@ apiVersion: security.istio.io/v1beta1
 kind: PeerAuthentication
 metadata:
   name: default
-  namespace: httpbin
+  namespace: istio-system
 spec:
   mtls:
-    # mode: PERMISSIVE
-    mode: STRICT
+    mode: PERMISSIVE
+    # mode: STRICT
