@@ -10,7 +10,7 @@
 
 set -ux
 
-HARBOR_REPO=harbor.csde.caci.com/equinox
+HARBOR_REPO=equinox
 
 kubectl get pods --all-namespaces -o jsonpath="{.items[*].spec['initContainers', 'containers'][*].image}" |\
 tr -s '[[:space:]]' '\n' |\

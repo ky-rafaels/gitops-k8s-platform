@@ -1,5 +1,5 @@
 image:
-  repository: harbor.csde.caci.com/docker.io/chainguard/opentelemetry-collector-contrib
+  repository: docker.io/chainguard/opentelemetry-collector-contrib
   tag: latest
 mode: daemonset
 

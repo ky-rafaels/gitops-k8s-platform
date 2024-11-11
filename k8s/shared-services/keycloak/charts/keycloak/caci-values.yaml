@@ -6,7 +6,7 @@ global:
   # defaultStorageClass: ebs-csi-sc
   defaultStorageClass: efs-csi-sc
 image:
-  registry: harbor.csde.caci.com/docker.io
+  registry: docker.io
   repository: chainguard/keycloak
   tag: latest
 auth:
@@ -53,7 +53,7 @@ postgresql:
   volumePermissions:
     enabled: true 
     image: 
-      registry: harbor.csde.caci.com/docker.io
+      registry: docker.io
       # repository: bitnami/os-shell
       # tag: 12-debian-12-r26
   primary:
@@ -74,7 +74,7 @@ postgresql:
     # existingSecret: "keycloak-postgres-password"
   architecture: standalone
   image:
-    registry: harbor.csde.caci.com/docker.io
+    registry: docker.io
     repository: chainguard/postgres-helm-compat
     tag: latest
 logging:

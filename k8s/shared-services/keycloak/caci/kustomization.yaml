@@ -6,5 +6,5 @@ bases:
 
 images:
 - name: quay.io/keycloak/keycloak:21.0.2
-  newName: harbor.csde.caci.com/docker.io/chainguard/keycloak
+  newName: docker.io/chainguard/keycloak
   newTag: latest

@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: harbor.csde.caci.com/docker.io/chainguard/aws-ebs-csi-driver
+  repository: docker.io/chainguard/aws-ebs-csi-driver
   # Overrides the image tag whose default is v{{ .Chart.AppVersion }}
   tag: "latest"
   pullPolicy: IfNotPresent
@@ -16,7 +16,7 @@ sidecars:
     env: []
     image:
       pullPolicy: IfNotPresent
-      repository: harbor.csde.caci.com/docker.io/chainguard/kubernetes-csi-external-provisioner
+      repository: docker.io/chainguard/kubernetes-csi-external-provisioner
       tag: "latest"
     logLevel: 2
     # Additional parameters provided by external-provisioner.
@@ -43,7 +43,7 @@ sidecars:
     env: []
     image:
       pullPolicy: IfNotPresent
-      repository: harbor.csde.caci.com/docker.io/chainguard/kubernetes-csi-external-attacher
+      repository: docker.io/chainguard/kubernetes-csi-external-attacher
       tag: "latest"
     # Tune leader lease election for csi-attacher.
     # Leader election is on by default.
@@ -72,7 +72,7 @@ sidecars:
     env: []
     image:
       pullPolicy: IfNotPresent
-      repository: harbor.csde.caci.com/docker.io/chainguard/kubernetes-csi-external-snapshotter
+      repository: docker.io/chainguard/kubernetes-csi-external-snapshotter
       tag: "latest"
     logLevel: 2
     # Additional parameters provided by csi-snapshotter.
@@ -88,7 +88,7 @@ sidecars:
   livenessProbe:
     image:
       pullPolicy: IfNotPresent
-      repository: harbor.csde.caci.com/docker.io/chainguard/kubernetes-csi-livenessprobe
+      repository: docker.io/chainguard/kubernetes-csi-livenessprobe
       tag: "latest"
     # Additional parameters provided by livenessprobe.
     additionalArgs: []
@@ -100,7 +100,7 @@ sidecars:
     env: []
     image:
       pullPolicy: IfNotPresent
-      repository: harbor.csde.caci.com/docker.io/chainguard/kubernetes-csi-external-resizer
+      repository: docker.io/chainguard/kubernetes-csi-external-resizer
       tag: "latest"
     # Tune leader lease election for csi-resizer.
     # Leader election is on by default.
@@ -127,7 +127,7 @@ sidecars:
     env: []
     image:
       pullPolicy: IfNotPresent
-      repository: harbor.csde.caci.com/docker.io/chainguard/kubernetes-csi-node-driver-registrar
+      repository: docker.io/chainguard/kubernetes-csi-node-driver-registrar
       tag: "latest"
     logLevel: 2
     # Additional parameters provided by node-driver-registrar.

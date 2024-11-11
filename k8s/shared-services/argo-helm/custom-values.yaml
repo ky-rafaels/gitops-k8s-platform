@@ -1,19 +1,19 @@
 global:
   image:
-    repository: harbor.csde.caci.com/docker.io/chainguard/argocd
+    repository: docker.io/chainguard/argocd
     tag: latest
 repoServer:
   image:
-    repository: harbor.csde.caci.com/docker.io/chainguard/argocd-repo-server
+    repository: docker.io/chainguard/argocd-repo-server
     tag: latest
 dex:
   image:
-    repository: harbor.csde.caci.com/docker.io/chainguard/dex 
+    repository: docker.io/chainguard/dex 
     tag: latest
 redis:
   image:
     # -- Redis repository
-    repository: harbor.csde.caci.com/docker.io/chainguard/redis
+    repository: docker.io/chainguard/redis
     # -- Redis tag
     tag: latest
 server:

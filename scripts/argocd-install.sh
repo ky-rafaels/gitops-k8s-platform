@@ -2,25 +2,24 @@
 
 set -o errexit
 
-# Check if argocd command is installed
-if ! command -v argocd &> /dev/null
-then
-    echo "argocd command not found, install here: https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-with-curl"
-    exit 1
-fi
+# # Check if argocd command is installed
+# if ! command -v argocd &> /dev/null
+# then
+#     echo "argocd command not found, install here: https://argo-cd.readthedocs.io/en/stable/cli_installation/#download-with-curl"
+#     exit 1
+# fi
 
-helm upgrade --install argocd ../k8s/shared-services/argo-helm \
-    --namespace argocd \
-    --create-namespace \
-    --values ../k8s/shared-services/argo-helm/values.yaml \
-    --values ../k8s/shared-services/argo-helm/custom-values.yaml
+# helm upgrade --install argocd ../k8s/shared-services/argo-helm \
+#     --namespace argocd \
+#     --create-namespace \
+#     --values ../k8s/shared-services/argo-helm/custom-values.yaml
 
-kubectl -n argocd rollout status deploy/argocd-applicationset-controller || true
-kubectl -n argocd rollout status deploy/argocd-dex-server || true
-kubectl -n argocd rollout status deploy/argocd-notifications-controller || true
-kubectl -n argocd rollout status deploy/argocd-redis || true
-kubectl -n argocd rollout status deploy/argocd-repo-server || true
-kubectl -n argocd rollout status deploy/argocd-server || true
+# kubectl -n argocd rollout status deploy/argocd-applicationset-controller || true
+# kubectl -n argocd rollout status deploy/argocd-dex-server || true
+# kubectl -n argocd rollout status deploy/argocd-notifications-controller || true
+# kubectl -n argocd rollout status deploy/argocd-redis || true
+# kubectl -n argocd rollout status deploy/argocd-repo-server || true
+# kubectl -n argocd rollout status deploy/argocd-server || true
 
 # may need to change this below to {.status.loadBalancer.ingress[0].hostname}
 ARGOCD_ENDPOINT=$(kubectl get service argocd-server -n argocd --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')

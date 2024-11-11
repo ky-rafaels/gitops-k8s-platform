@@ -1,11 +1,11 @@
 core:
   image:
-    repository: harbor.csde.caci.com/docker.io/chainguard/harbor-core
+    repository: docker.io/chainguard/harbor-core
     tag: latest
 jobservice:
   replicas: 1
   image:
-    repository: harbor.csde.caci.com/docker.io/chainguard/harbor-jobservice
+    repository: docker.io/chainguard/harbor-jobservice
     tag: latest
   jobLogger: "stdout"
   resources:
@@ -17,34 +17,34 @@ jobservice:
       memory: 140Mi
 nginx:
   image:
-    repository: harbor.csde.caci.com/docker.io/goharbor/nginx-photon
+    repository: docker.io/goharbor/nginx-photon
     tag: v2.11.1
 portal:
   image:
-    repository: harbor.csde.caci.com/docker.io/chainguard/harbor-portal
+    repository: docker.io/chainguard/harbor-portal
     tag: latest
 registry:
   registry: 
     image:
-      repository: harbor.csde.caci.com/docker.io/chainguard/harbor-registry
+      repository: docker.io/chainguard/harbor-registry
       tag: latest
   controller:
     image:
-      repository: harbor.csde.caci.com/docker.io/chainguard/harbor-registryctl
+      repository: docker.io/chainguard/harbor-registryctl
       tag: latest
 database:
   internal:
     image: 
-      repository: harbor.csde.caci.com/docker.io/chainguard/harbor-db
+      repository: docker.io/chainguard/harbor-db
       tag: latest
 redis:
   internal:
     image:
-      repository: harbor.csde.caci.com/docker.io/goharbor/redis-photon
+      repository: docker.io/goharbor/redis-photon
       tag: v2.10.0
 trivy:
   image:
-    repository: harbor.csde.caci.com/docker.io/chainguard/harbor-trivy-adapter
+    repository: docker.io/chainguard/harbor-trivy-adapter
     tag: latest
   skipUpdate: true
   offlineScan: true

@@ -17,12 +17,12 @@ echo "Creating a temporary config.json"
 # https://docs.docker.com/engine/reference/commandline/login/#credentials-store
 cat <<EOF >"${DOCKER_CONFIG}/config.json"
 {
- "auths": { "harbor.csde.caci.com/equinox": {} }
+ "auths": { "equinox": {} }
 }
 EOF
 # login to gcr in DOCKER_CONFIG using an access token
 echo "Logging in to CSDE Harbor in temporary docker client config directory ..."
-docker login -u "${ROBOT_ACCOUNT}" -p "${ROBOT_PASSWORD}" https://harbor.csde.caci.com/equinox
+docker login -u "${ROBOT_ACCOUNT}" -p "${ROBOT_PASSWORD}" https://equinox
 
 # setup credentials on each node
 echo "Moving credentials to kind cluster name='${KIND_CLUSTER_NAME}' nodes ..."

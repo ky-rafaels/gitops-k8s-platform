@@ -37,7 +37,7 @@ commonLabels: {}
 ## @param image.pullSecrets [array]  Sealed Secrets image pull secrets
 ##
 image:
-  registry: harbor.csde.caci.com/docker.io
+  registry: docker.io
   repository: bitnami/sealed-secrets-controller
   tag: 0.27.1
   ## Specify a imagePullPolicy

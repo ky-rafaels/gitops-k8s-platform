@@ -6,5 +6,5 @@ bases:
 
 images:
   - name: registry.k8s.io/metrics-server/metrics-server:v0.7.0
-    newName: harbor.csde.caci.com/docker.io/chainguard/metrics-server
+    newName: docker.io/chainguard/metrics-server
     newTag: latest

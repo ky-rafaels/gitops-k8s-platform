@@ -1,7 +1,7 @@
 volumePermissions:
   enabled: true 
   image: 
-    registry: harbor.csde.caci.com/docker.io
+    registry: docker.io
     # repository: bitnami/os-shell
     # tag: 12-debian-12-r26
 primary:
@@ -30,6 +30,6 @@ auth:
     userPasswordKey: postgresql-password
 architecture: standalone
 image:
-  registry: harbor.csde.caci.com/docker.io
+  registry: docker.io
   repository: chainguard/postgres-helm-compat
   tag: latest

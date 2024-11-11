@@ -1,20 +1,20 @@
 crds:
   migration:
     image:
-      registry: harbor.csde.caci.com/ghcr.io
+      registry: ghcr.io
 config:
   enableDefaultRegistryMutation: false
-  defaultRegistry: harbor.csde.caci.com/docker.io
+  defaultRegistry: docker.io
 admissionController:
   replicas: 1
   initContainer:
     image:
-      registry: harbor.csde.caci.com/ghcr.io
+      registry: ghcr.io
       repository: kyverno/kyvernopre
       # tag: latest
   container:
     image:
-      registry: harbor.csde.caci.com/ghcr.io
+      registry: ghcr.io
       repository: kyverno/kyverno
       # tag: latest
     resources:
@@ -30,44 +30,44 @@ admissionController:
       readOnlyRootFilesystem: true
 webhooksCleanup:
   image:
-    registry: harbor.csde.caci.com/docker.io
+    registry: docker.io
     repository: bitnami/kubectl
     tag: '1.28.5'
     # pullPolicy: ~
 policyReportsCleanup:
   image:
-    registry: harbor.csde.caci.com/docker.io
+    registry: docker.io
     repository: bitnami/kubectl
     tag: '1.28.5'
     # pullPolicy: ~
 cleanupJobs:
   admissionReports:
     image:
-      registry: harbor.csde.caci.com/docker.io
+      registry: docker.io
       repository: bitnami/kubectl
       tag: '1.28.5'
       # pullPolicy: ~
   clusterAdmissionReports:
     image:
-      registry: harbor.csde.caci.com/docker.io
+      registry: docker.io
       repository: bitnami/kubectl
       tag: '1.28.5'
       # pullPolicy: ~
   updateRequests:
     image:
-      registry: harbor.csde.caci.com/docker.io
+      registry: docker.io
       repository: bitnami/kubectl
       tag: '1.28.5'
       # pullPolicy: ~
   ephemeralReports:
     image:
-      registry: harbor.csde.caci.com/docker.io
+      registry: docker.io
       repository: bitnami/kubectl
       tag: '1.28.5'
       # pullPolicy: ~
   clusterEphemeralReports:
     image:
-      registry: harbor.csde.caci.com/docker.io
+      registry: docker.io
       repository: bitnami/kubectl
       tag: '1.28.5'
       # pullPolicy: ~
@@ -75,21 +75,21 @@ cleanupJobs:
 backgroundController:
   replicas: 1
   image: 
-    registry: harbor.csde.caci.com/ghcr.io
+    registry: ghcr.io
     repository: kyverno/background-controller
     # tag: ~
     # pullPolicy: IfNotPresent
 cleanupController:
   replicas: 1
   image:
-    registry: harbor.csde.caci.com/ghcr.io
+    registry: ghcr.io
     repository: kyverno/cleanup-controller
     # tag: ~
     # pullPolicy: IfNotPresent
 reportsController:
   replicas: 1
   image: 
-    registry: harbor.csde.caci.com/ghcr.io
+    registry: ghcr.io
     repository: kyverno/reports-controller
     # tag: ~
     # pullPolicy: IfNotPresent

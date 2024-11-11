@@ -7,7 +7,7 @@ istiod:
     global:
       meshID: mesh1
       network: network1
-      hub: 'harbor.csde.caci.com/docker.io/chainguard'
+      hub: 'docker.io/chainguard'
       tag: latest
       logAsJson: true
       logging:

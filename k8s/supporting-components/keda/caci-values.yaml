@@ -4,14 +4,14 @@ image:
     registry: null
     # -- Image name of KEDA operator
     # repository: ghcr.io/kedacore/keda
-    repository: harbor.csde.caci.com/docker.io/chainguard/keda
+    repository: docker.io/chainguard/keda
     # -- Image tag of KEDA operator. Optional, given app version of Helm chart is used by default
     tag: "latest"
   metricsApiServer:
     # -- Image registry of KEDA Metrics API Server
     registry: null
     # -- Image name of KEDA Metrics API Server
-    repository: harbor.csde.caci.com/ghcr.io/kedacore/keda-metrics-apiserver # does not seem to be chainguard equivalent
+    repository: ghcr.io/kedacore/keda-metrics-apiserver # does not seem to be chainguard equivalent
     # -- Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default
     tag: ""
   webhooks:
@@ -19,7 +19,7 @@ image:
     registry: null
     # -- Image name of KEDA admission-webhooks
     # repository: ghcr.io/kedacore/keda-admission-webhooks
-    repository: harbor.csde.caci.com/docker.io/chainguard/keda-admission-webhooks
+    repository: docker.io/chainguard/keda-admission-webhooks
     # -- Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default
     tag: "latest"
   # -- Image pullPolicy for all KEDA components
