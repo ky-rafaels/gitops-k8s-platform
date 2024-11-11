@@ -43,11 +43,10 @@ echo "Setting up private Git repositories....
 ---------------------------------------------
 "
 
-# echo "Enter username for Gitlab CSDE"
-# read GIT_USER
+echo "Enter username for Gitlab CSDE"
+read GIT_USER
 
-# echo "Enter password for Gitlab CSDE"
-# read -s GIT_PASSWORD
+echo "Enter password for Gitlab CSDE"
+read -s GIT_PASSWORD
 
-argocd repo add https://gitlab.csde.caci.com/Equinox/belltower-deploy.git --username ${GIT_USER} --password ${GIT_TOKEN} --insecure-skip-server-verification
-argocd repo add https://istio-release.storage.googleapis.com/charts --type helm --name istio --insecure-skip-server-verification 
+argocd repo add https://github.com/ky-rafaels/gitops-k8s-platform.git --username ${GIT_USER} --password ${GIT_TOKEN} --insecure-skip-server-verification
