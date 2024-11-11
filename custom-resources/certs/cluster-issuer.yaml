@@ -14,10 +14,10 @@ metadata:
   namespace: cert-manager
 spec:
   isCA: true
-  commonName: 'metron'
+  commonName: 'example'
   subject:
     organizations:
-      - metron
+      - example
   secretName: root-secret
   privateKey:
     algorithm: RSA

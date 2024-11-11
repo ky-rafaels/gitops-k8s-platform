@@ -675,7 +675,7 @@ data:
         "alwaysDisplayInConsole" : true,
         "clientAuthenticatorType" : "client-secret",
         "secret" : "ZodHLpiuAbdJJl6qiaQ7uFB91hn7o58V",
-        "redirectUris" : [ "https://belltower.metron.com/login/oauth2/code/belltower-webclient","http://belltower.metron.com/login/oauth2/code/belltower-webclient" ],
+        "redirectUris" : [ "https://belltower.example.com/login/oauth2/code/belltower-webclient","http://belltower.example.com/login/oauth2/code/belltower-webclient" ],
         "webOrigins" : [ "" ],
         "notBefore" : 0,
         "bearerOnly" : false,
@@ -691,7 +691,7 @@ data:
           "oidc.ciba.grant.enabled" : "false",
           "client.secret.creation.time" : "1681429589",
           "backchannel.logout.session.required" : "true",
-          "post.logout.redirect.uris" : "https://belltower.metron.com/*##http://belltower.metron.com/*",
+          "post.logout.redirect.uris" : "https://belltower.example.com/*##http://belltower.example.com/*",
           "oauth2.device.authorization.grant.enabled" : "false",
           "display.on.consent.screen" : "false",
           "backchannel.logout.revoke.offline.tokens" : "false"

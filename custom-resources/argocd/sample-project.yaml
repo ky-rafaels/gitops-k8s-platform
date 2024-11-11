@@ -18,23 +18,23 @@ spec:
   - '*'
   roles:   
   - name: read-only
-    description: Read-only privileges to metron 
+    description: Read-only privileges to example 
     policies:
     - p, proj:default:read-only, applications, get, default/*, allow
     groups:
-    - metron
+    - example
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: metron 
+  name: example 
   namespace: argocd
 spec:
   roles:
   # A role which provides read-only access to all applications in the project
   - name: read-only
-    description: Read-only privileges to metron 
+    description: Read-only privileges to example 
     policies:
-    - p, proj:metron:read-only, applications, get, metron/*, allow
+    - p, proj:example:read-only, applications, get, example/*, allow
     groups:
-    - metron
+    - example

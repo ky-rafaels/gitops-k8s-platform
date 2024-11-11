@@ -3,7 +3,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: wildcard
-  namespace: httpbin
+  namespace: ingress-gtw
 spec:
   secretName: wildcard-tls
   duration: 2160h # 90d
@@ -11,7 +11,7 @@ spec:
   commonName: 'wildcard'
   subject:
     organizations:
-      - metron
+      - example
   isCA: false
   privateKey:
     algorithm: RSA
