@@ -7,10 +7,10 @@ metadata:
 spec:
   parentRefs:
   - name: gateway
-    namespace: httpbin
+    namespace: ingress-gtw
     sectionName: https
   hostnames: 
-  - 'grafana.equinox.caci.com'
+  - 'grafana.ky-rafaels.com'
   rules:
   - matches:
     - path:

@@ -10,7 +10,7 @@ spec:
     namespace: httpbin
     sectionName: https
   hostnames: 
-  - 'argocd.equinox.caci.com'
+  - 'argocd.ky-rafaels.com'
   rules:
   - matches:
     - path:
