@@ -18,7 +18,7 @@ spec:
       ignoreMissingValueFiles: true
       valueFiles:
       - values.yaml
-      - caci-values.yaml
+      - custom-values.yaml
   sources: []
   project: default
   syncPolicy:

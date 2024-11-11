@@ -16,7 +16,7 @@ spec:
     targetRevision: belltower-deploy#190
     helm:
       valueFiles:
-      - caci-values.yaml
+      - custom-values.yaml
   sources: []
   project: default
   syncPolicy:

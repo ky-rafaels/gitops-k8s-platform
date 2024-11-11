@@ -21,7 +21,7 @@ spec:
           ignoreMissingValueFiles: true
           valueFiles:
             - values.yaml
-            - caci-values.yaml
+            - custom-values.yaml
       destination:
         name: "in-cluster"
         namespace: 'keda'

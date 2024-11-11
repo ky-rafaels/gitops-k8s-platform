@@ -12,7 +12,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git'
-    path: k8s/supporting-components/metrics-server/eks
+    path: k8s/supporting-components/metrics-server/kind
     targetRevision: main
   sources: []
   project: default
