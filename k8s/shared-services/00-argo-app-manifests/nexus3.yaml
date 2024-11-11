@@ -11,7 +11,7 @@ spec:
     namespace: nexus3
     server: 'https://kubernetes.default.svc'
   source:
-    repoURL: 'https://gitlab.csde.caci.com/Equinox/belltower-deploy.git'
+    repoURL: 'https://github.com/ky-rafaels/gitops-k8s-platform.git'
     path: k8s/shared-services/nexus3
     targetRevision: belltower-deploy#190
     helm:

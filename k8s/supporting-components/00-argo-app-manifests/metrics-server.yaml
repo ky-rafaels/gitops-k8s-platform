@@ -11,7 +11,7 @@ spec:
     namespace: kube-system
     server: 'https://kubernetes.default.svc'
   source:
-    repoURL: 'https://gitlab.csde.caci.com/Equinox/belltower-deploy.git'
+    repoURL: 'https://github.com/ky-rafaels/gitops-k8s-platform.git'
     path: k8s/supporting-components/metrics-server/eks
     targetRevision: main
   sources: []
