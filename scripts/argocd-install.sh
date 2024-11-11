@@ -48,4 +48,4 @@ read GIT_USER
 echo "Enter password for Gitlab CSDE"
 read -s GIT_PASSWORD
 
-argocd repo add https://github.com/ky-rafaels/gitops-k8s-platform.git --username ${GIT_USER} --password ${GIT_TOKEN} --insecure-skip-server-verification
+argocd repo add git@github.com:ky-rafaels/gitops-k8s-platform.git --username ${GIT_USER} --password ${GIT_TOKEN} --insecure-skip-server-verification

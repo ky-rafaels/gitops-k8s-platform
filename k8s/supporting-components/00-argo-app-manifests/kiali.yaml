@@ -11,7 +11,7 @@ spec:
     namespace: istio-system
     server: 'https://kubernetes.default.svc'
   source:
-    repoURL: 'https://github.com/ky-rafaels/gitops-k8s-platform.git'
+    repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git'
     path: k8s/supporting-components/kiali-server
     targetRevision: main
   sources: []

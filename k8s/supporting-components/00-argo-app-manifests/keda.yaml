@@ -13,7 +13,7 @@ spec:
     spec:
       project: default
       source: 
-        repoURL: 'https://github.com/ky-rafaels/gitops-k8s-platform.git' 
+        repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git' 
         targetRevision: main
         path: k8s/supporting-components/keda/
         helm:

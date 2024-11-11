@@ -11,7 +11,7 @@ spec:
     namespace: loki
     server: 'https://kubernetes.default.svc'
   source:
-    repoURL: 'https://github.com/ky-rafaels/gitops-k8s-platform.git'
+    repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git'
     path: k8s/shared-services/loki
     targetRevision: main
     helm:
