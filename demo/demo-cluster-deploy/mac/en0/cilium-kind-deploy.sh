@@ -150,8 +150,8 @@ docker network connect "kind" gcr || true
 # Preload MetalLB images
 docker pull quay.io/metallb/controller:v0.13.12
 docker pull quay.io/metallb/speaker:v0.13.12
-TMPDIR=$HOME/tmp kind load docker-image quay.io/metallb/controller:v0.13.12 --name kind${number}
-TMPDIR=$HOME/tmp kind load docker-image quay.io/metallb/speaker:v0.13.12 --name kind${number}
+kind load docker-image quay.io/metallb/controller:v0.13.12 --name kind${number}
+kind load docker-image quay.io/metallb/speaker:v0.13.12 --name kind${number}
 kubectl --context=kind-kind${number} apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
 kubectl --context=kind-kind${number} create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 kubectl --context=kind-kind${number} -n metallb-system rollout status deploy controller || true
