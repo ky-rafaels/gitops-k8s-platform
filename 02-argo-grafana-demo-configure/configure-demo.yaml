@@ -12,11 +12,8 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git'
-    path: k8s/supporting-components/opentelemetry-collector/
+    path: custom-resources/00-gafana-demo
     targetRevision: main
-    helm:
-      valueFiles:
-      - custom-values.yaml
   sources: []
   project: default
   syncPolicy:
