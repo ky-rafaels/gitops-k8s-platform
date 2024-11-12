@@ -23,4 +23,5 @@ venv
 *.terraform.*
 *.terraform/
 
-# helm
+# shared-storage dir
+*shared-storage*
