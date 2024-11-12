@@ -8,11 +8,11 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: 
+    namespace: default
     server: 'https://kubernetes.default.svc'
   source:
     repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git'
-    path: custom-resources/00-gafana-demo
+    path: custom-resources/00-grafana-demo
     targetRevision: main
   sources: []
   project: default
