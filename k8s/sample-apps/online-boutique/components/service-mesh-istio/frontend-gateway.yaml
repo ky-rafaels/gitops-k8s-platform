@@ -31,6 +31,8 @@ kind: HTTPRoute
 metadata:
   name: frontend-route
 spec:
+  hostnames:
+  - 'online-boutique.ky-rafaels.com'
   parentRefs:
   - name: istio-gateway
   rules:
