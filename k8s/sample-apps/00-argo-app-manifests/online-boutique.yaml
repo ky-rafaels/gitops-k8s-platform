@@ -1,0 +1,28 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: online-boutique
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: online-boutique
+    server: 'https://kubernetes.default.svc'
+  source:
+    repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git'
+    path: k8s/sample-apps/online-boutique
+    targetRevision: main
+  sources: []
+  project: default
+  syncPolicy:
+    managedNamespaceMetadata:
+      labels:
+        istio.io/rev: 1-22
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
