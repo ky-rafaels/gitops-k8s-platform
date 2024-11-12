@@ -1,0 +1,29 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: loki
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: loki
+    server: 'https://kubernetes.default.svc'
+  source:
+    repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git'
+    path: k8s/shared-services/loki
+    targetRevision: main
+    helm:
+      valueFiles:
+      - values.yaml
+      - single-binary-values.yaml
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

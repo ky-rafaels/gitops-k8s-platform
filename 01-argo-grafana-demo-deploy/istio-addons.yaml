@@ -1,0 +1,27 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: istio-addons 
+  namespace: argocd
+spec:
+  generators:
+    - clusters: {} 
+  template:
+    metadata:
+      name: 'istio-addons'
+    spec:
+      project: default
+      source: 
+        repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git' 
+        targetRevision: main
+        path: k8s/supporting-components/istio/1.22/addons
+      destination:
+        name: "in-cluster"
+        namespace: 'istio-system'
+      syncPolicy:
+        automated:
+          prune: true
+        syncOptions:
+          - CreateNamespace=true
+          - ApplyOutOfSyncOnly=true
