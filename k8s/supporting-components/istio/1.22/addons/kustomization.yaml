@@ -5,6 +5,7 @@ resources:
   - grafana.yaml
   - prometheus.yaml
   - route.yaml
+  - zipkin.yaml
   # - jaeger.yaml
 
 images:
