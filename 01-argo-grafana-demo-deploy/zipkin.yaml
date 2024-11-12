@@ -1,0 +1,28 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: open-telemetry
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: open-telemetry
+    server: 'https://kubernetes.default.svc'
+  source:
+    repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git'
+    path: k8s/supporting-components/zipkin
+    targetRevision: main
+    helm:
+      valueFiles:
+      - custom-values.yaml
+  sources: []
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
