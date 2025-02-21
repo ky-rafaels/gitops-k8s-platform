@@ -1,5 +1,5 @@
 image:
-  repository: docker.io/chainguard/opentelemetry-collector-contrib
+  repository: cgr.dev/chainguard/opentelemetry-collector-contrib
   tag: latest
 mode: daemonset
 
