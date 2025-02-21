@@ -16,7 +16,7 @@ spec:
     targetRevision: main
     helm:
       valueFiles:
-      - custom-values.yaml
+      - cgr-values.yaml
   sources: []
   project: default
   syncPolicy:
