@@ -3,5 +3,5 @@ kind: Kustomization
 
 resources:
 - keycloak-deployment.yaml
-- realm-cm.yaml
+# - realm-cm.yaml
 # - keycloak-pvc.yaml
