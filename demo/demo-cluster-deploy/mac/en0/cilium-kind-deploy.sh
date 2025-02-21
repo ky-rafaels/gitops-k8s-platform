@@ -6,7 +6,7 @@ name=$2
 region=$3
 zone=$4
 twodigits=$(printf "%02d\n" $number)
-kindest_node=${KINDEST_NODE:-kindest\/node:v1.28.0@sha256:b7a4cad12c197af3ba43202d3efe03246b3f0793f162afb40a33c923952d5b31}
+kindest_node=${KINDEST_NODE:-kindest\/node:v1.32.1@sha256:6afef2b7f69d627ea7bf27ee6696b6868d18e03bf98167c420df486da4662db6}
 
 if [ -z "$3" ]; then
   region=us-east-1

@@ -11,4 +11,4 @@ eksctl create nodegroup \
   --ssh-access \
   --managed=true \
   --cfn-disable-rollback \
-  --ssh-public-key ~/.ssh/equinox-shared.pub
+  --ssh-public-key ~/.ssh/-shared.pub

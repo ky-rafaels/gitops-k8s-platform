@@ -45,7 +45,7 @@ enableDefaultInitContainers: true
 args:
   - start
   - --hostname 
-  - https://keycloak.equinox.caci.com
+  - https://keycloak..chainguard.dev
   # - --optimized
 extraVolumes: []
 extraVolumeMounts: []
