@@ -1,21 +1,21 @@
 global:
   image:
-    repository: docker.io/chainguard/argocd
-    tag: latest
+    repository: cgr.dev/ky-rafaels.example.com/argocd
+    tag: 2.14.2
 repoServer:
   image:
-    repository: docker.io/chainguard/argocd-repo-server
-    tag: latest
+    repository: cgr.dev/ky-rafaels.example.com/argocd-repo-server
+    tag: 2.14.2
 dex:
   image:
-    repository: docker.io/chainguard/dex 
-    tag: latest
+    repository: cgr.dev/ky-rafaels.example.com/dex
+    tag: 2.42
 redis:
   image:
     # -- Redis repository
-    repository: docker.io/chainguard/redis
+    repository: cgr.dev/ky-rafaels.example.com/redis
     # -- Redis tag
-    tag: latest
+    tag: 7.2
 server:
   extraArgs:
   - --insecure
