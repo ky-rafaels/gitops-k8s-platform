@@ -2,6 +2,9 @@ global:
   image:
     repository: cgr.dev/ky-rafaels.example.com/argocd
     tag: 2.14.2
+  # -- Secrets with credentials to pull images from a private registry
+  imagePullSecrets:
+  - regcred
 repoServer:
   image:
     repository: cgr.dev/ky-rafaels.example.com/argocd-repo-server

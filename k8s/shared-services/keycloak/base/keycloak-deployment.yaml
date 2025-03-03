@@ -32,8 +32,6 @@ spec:
   selector:
     matchLabels:
       app: keycloak
-  strategy:
-    type: RollingUpdate
   template:
     metadata:
       labels:
