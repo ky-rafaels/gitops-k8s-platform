@@ -1,38 +1,32 @@
 ---
 apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
+kind: Application
 metadata:
   name: istiod
   namespace: argocd
 spec:
-  generators:
-    - clusters: {}
-  template:
-    metadata:
-      name: 'istiod'
-    spec:
-      project: default
-      source: 
-        repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git' 
-        targetRevision: main
-        path: k8s/supporting-components/istio/1.22/istiod
+  spec:
+    project: default
+    sources: 
+      - repoURL: https://istio-release.storage.googleapis.com/charts
+        chart: istiod
+        targetRevision: 
         helm:
-          releaseName: istiod
           ignoreMissingValueFiles: true
           valueFiles:
-            - values.yaml
-      destination:
-        name: "in-cluster"
-        namespace: 'istio-system'
-      syncPolicy:
-        automated:
-          prune: true
-        syncOptions:
-          - CreateNamespace=true
-          - ApplyOutOfSyncOnly=true
-      ignoreDifferences:
-        - group: admissionregistration.k8s.io
-          kind: ValidatingWebhookConfiguration
-          name: istio-validator-1-22-istio-system
-          jsonPointers:
-            - /webhooks/0/failurePolicy
+            - $values/k8s/supporting-components/istio/cgr-values.yaml
+    destination:
+      name: "in-cluster"
+      namespace: 'istio-system'
+    syncPolicy:
+      automated:
+        prune: true
+      syncOptions:
+        - CreateNamespace=true
+        - ApplyOutOfSyncOnly=true
+    ignoreDifferences:
+      - group: admissionregistration.k8s.io
+        kind: ValidatingWebhookConfiguration
+        name: istio-validator-1-22-istio-system
+        jsonPointers:
+          - /webhooks/0/failurePolicy
