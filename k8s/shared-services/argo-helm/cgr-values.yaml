@@ -15,9 +15,7 @@ dex:
     tag: 2.42
 redis:
   image:
-    # -- Redis repository
     repository: cgr.dev/ky-rafaels.example.com/redis
-    # -- Redis tag
     tag: 7.2.7
 server:
   extraArgs:
