@@ -1,0 +1,27 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault 
+  namespace: argocd
+spec:
+  project: default
+  source: 
+    repoURL: https://helm.releases.hashicorp.com 
+    chart: vault
+    targetRevision: 0.30.1
+    helm:
+      values: |
+        server:
+          image:
+            repository: hashicorp/vault
+            tag: "1.20.1"
+  destination:
+    name: "in-cluster"
+    namespace: 'vault'
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true

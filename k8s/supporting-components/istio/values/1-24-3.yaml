@@ -1,8 +1,7 @@
-
 base:
   defaultRevision: 1-24
 istiod:
-  # revisionTags: ["prod-canary"]
+  revisionTags: ["prod"]
   defaults:
     revision: 1-24
     global:
@@ -53,11 +52,6 @@ istiod:
       #   - localtrace
       defaultConfig:
         holdApplicationUntilProxyStarts: true
-        #   sampling: 100
-        # envoyMetricsService:
-        #   address: gloo-mesh-agent.gloo-mesh:9977
-        # envoyAccessLogService:
-        #   address: gloo-mesh-agent.gloo-mesh:9977
         terminationDrainDuration: 10s
         proxyMetadata:
           ISTIO_META_DNS_CAPTURE: "true"
