@@ -1,24 +1,27 @@
 global:
   image:
-    repository: docker.io/chainguard/argocd
-    tag: latest
+    repository: cgr.dev/ky-rafaels.example.com/argocd
+    tag: 2.14.3
+  # -- Secrets with credentials to pull images from a private registry
+  # imagePullSecrets:
+  #   - "regcred"
 repoServer:
   image:
-    repository: docker.io/chainguard/argocd-repo-server
-    tag: latest
+    repository: cgr.dev/ky-rafaels.example.com/argocd-repo-server
+    tag: 2.14.3
 dex:
   image:
-    repository: docker.io/chainguard/dex 
-    tag: latest
+    repository: cgr.dev/ky-rafaels.example.com/dex
+    tag: 2.42
 redis:
   image:
-    # -- Redis repository
-    repository: docker.io/chainguard/redis
-    # -- Redis tag
-    tag: latest
+    repository: cgr.dev/ky-rafaels.example.com/redis
+    tag: 7.2.7
 server:
   extraArgs:
   - --insecure
+crds:
+  install: true
 # configs:
 #   cm:
 #     dex.config: |

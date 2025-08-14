@@ -12,9 +12,9 @@ global:
   edition: ce # community edition
   # gitlabVersion: "v17.2.2"
   hosts: 
-    domain: equinox.caci.com
+    domain: .chainguard.dev
     kas:
-      name: gitlab.equinox.caci.com
+      name: gitlab..chainguard.dev
   ingress:
     # enabled: false
     configureCertmanager: false

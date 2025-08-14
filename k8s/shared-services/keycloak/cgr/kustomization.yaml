@@ -6,5 +6,5 @@ bases:
 
 images:
 - name: quay.io/keycloak/keycloak:21.0.2
-  newName: docker.io/chainguard/keycloak
-  newTag: latest
+  newName: cgr.dev/ky-rafaels.example.com/keycloak
+  newTag: 26.2.1-dev

@@ -10,7 +10,7 @@ spec:
     namespace: httpbin
     sectionName: https
   hostnames: 
-  - 'harbor.equinox.caci.com'
+  - 'harbor..chainguard.dev'
   rules:
   - matches:
     - path:
@@ -31,7 +31,7 @@ spec:
 #     namespace: httpbin
 #     sectionName: passthrough-tls
 #   hostnames: 
-#   - 'harbor.equinox.caci.com'
+#   - 'harbor..chainguard.dev'
 #   rules:
 #   - backendRefs:
 #     - name: harbor

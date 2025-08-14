@@ -10,7 +10,7 @@ spec:
     namespace: httpbin
     sectionName: https
   hostnames: 
-  - 'keycloak.equinox.caci.com'
+  - 'keycloak..chainguard.dev'
   rules:
   - matches:
     - path:

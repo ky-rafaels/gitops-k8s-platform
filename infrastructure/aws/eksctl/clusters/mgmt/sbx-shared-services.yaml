@@ -22,5 +22,5 @@ managedNodeGroups:
     privateNetworking: true
     ssh:
       allow: true
-      publicKeyPath: "~/.ssh/equinox-shared.pub"
+      publicKeyPath: "~/.ssh/-shared.pub"
 

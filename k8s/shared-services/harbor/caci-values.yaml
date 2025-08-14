@@ -54,12 +54,12 @@ expose:
     enabled: false
     certSource: "none"
     auto:
-      commonName: "harbor.equinox.caci.com"
+      commonName: "harbor..chainguard.dev"
     # secret:
     #   secretName: "harbor-tls"
   ingress:
     hosts:
-      core: harbor.equinox.caci.com
+      core: harbor..chainguard.dev
     controller: default
     kubeVersionOverride: ""
     className: "istio"
@@ -94,7 +94,7 @@ internalTLS:
   # trivy:
   #   # secret name for trivy's tls certs
   #   secretName: ""
-externalURL: https://harbor.equinox.caci.com
+externalURL: https://harbor..chainguard.dev
 persistence:
   enabled: true
   persistentVolumeClaim:

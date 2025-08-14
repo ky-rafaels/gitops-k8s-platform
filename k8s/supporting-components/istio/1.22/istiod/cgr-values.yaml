@@ -7,8 +7,8 @@ istiod:
     global:
       meshID: mesh1
       network: network1
-      hub: 'docker.io/chainguard'
-      tag: latest
+      hub: cgr.dev/ky-rafaels.example.com
+      tag: 1.22
       logAsJson: true
       logging:
         level: "default:info"

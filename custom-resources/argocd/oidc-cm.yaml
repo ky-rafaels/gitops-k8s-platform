@@ -4,10 +4,10 @@ metadata:
   name: argocd-cm
   namespace: argocd
 data:
-  url: https://argocd.equinox.caci.com
+  url: https://argocd..chainguard.dev
   oidc.config: |
     name: Keycloak
-    issuer: https://keycloak.equinox.caci.com/realms/belltower
+    issuer: https://keycloak..chainguard.dev/realms/belltower
     clientID: argocd
     clientSecret: $oidc.keycloak.clientSecret
     requestedScopes: ["openid", "profile", "email", "groups"]

@@ -32,8 +32,6 @@ spec:
   selector:
     matchLabels:
       app: keycloak
-  strategy:
-    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -43,7 +41,7 @@ spec:
         - args:
             - start
             - --optimized
-            - --import-realm
+            # - --import-realm
           env:
             - name: KC_DB
               value: postgres
@@ -72,11 +70,11 @@ spec:
               protocol: TCP
             - containerPort: 8443
               protocol: TCP
-          volumeMounts:
-            - mountPath: /opt/keycloak/data/import
-              name: keycloak-realm
+          # volumeMounts:
+          #   - mountPath: /opt/keycloak/data/import
+          #     name: keycloak-realm
       restartPolicy: Always
-      volumes:
-        - name: keycloak-realm
-          configMap:
-            name: belltower
+      # volumes:
+      #   - name: keycloak-realm
+      #     configMap:
+      #       name: belltower

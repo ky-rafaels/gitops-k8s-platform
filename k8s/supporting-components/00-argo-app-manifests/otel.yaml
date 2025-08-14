@@ -11,12 +11,12 @@ spec:
     namespace: open-telemetry
     server: 'https://kubernetes.default.svc'
   source:
-    repoURL: 'git@github.com:ky-rafaels/gitops-k8s-platform.git'
+    repoURL: git@github.com:ky-rafaels/gitops-k8s-platform.git
     path: k8s/supporting-components/opentelemetry-collector/
     targetRevision: main
     helm:
       valueFiles:
-      - custom-values.yaml
+      - cgr-values.yaml
   sources: []
   project: default
   syncPolicy:

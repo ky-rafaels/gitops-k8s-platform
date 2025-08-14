@@ -1,0 +1,28 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sigstore-policy-controller
+  namespace: argocd
+spec:
+  project: default
+  source: 
+    repoURL: https://sigstore.github.io/helm-charts
+    chart: policy-controller
+    targetRevision: 0.10.0
+    helm:
+      ignoreMissingValueFiles: true
+      values: |
+        webhook:
+          image:
+            repository: cgr.dev/ky-rafaels.example.com/sigstore-policy-controller:0.12
+            version: sha256:14447007e2ebd457735f6303209424de0db6ad477e12a98c89b2bfceb1ac0026
+  destination:
+    name: "in-cluster"
+    namespace: 'cosign-system'
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
