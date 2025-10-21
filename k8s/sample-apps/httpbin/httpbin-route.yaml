@@ -34,7 +34,7 @@ spec:
             name: httpbin
             port:
               number: 8000
-        path: /
+        path: /get
         pathType: Prefix
 # ---
 # kind: Role
