@@ -24,6 +24,14 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress 
 metadata:
   name: httpbin
+annotations:
+  cert-manager.io/issuer: selfsigned
+  kubernetes.io/ingress.class: kommander-traefik
+  nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+  nginx.ingress.kubernetes.io/rewrite-target: /$2
+  nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+  nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   ingressClassName: kommander-traefik
   rules:
@@ -34,7 +42,7 @@ spec:
             name: httpbin
             port:
               number: 8000
-        path: /get
+        path: /dkp/kuberenetes/get
         pathType: Prefix
 # ---
 # kind: Role
