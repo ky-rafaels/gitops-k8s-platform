@@ -4,17 +4,15 @@ kind: Ingress
 metadata:
   name: httpbin
   annotations:
-    cert-manager.io/issuer: selfsigned
+    cert-manager.io/cluster-issuer: selfsigned-issuer
     kubernetes.io/ingress.class: kommander-traefik
-    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/ssl-passthrough: "false"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/duration: 2160h # 90 days
+    cert-manager.io/renew-before: 360h # 15 days
     traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   ingressClassName: kommander-traefik
   rules:
-  - host: httpbin.ky-rafaels.com
+  - host: 10.38.207.151.httpbin.sslip.io 
     http: 
       paths:
       - backend:
@@ -24,6 +22,10 @@ spec:
               number: 8000
         path: /get
         pathType: Prefix
+  tls:
+  - hosts:
+    - 10.38.207.151.httpbin.sslip.io 
+    secretName: httpbin-tls
 # kubernetes gateway api example:
 # ---
 # apiVersion: gateway.networking.k8s.io/v1
