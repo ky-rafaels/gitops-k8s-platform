@@ -14,7 +14,8 @@ annotations:
 spec:
   ingressClassName: kommander-traefik
   rules:
-  - http: 
+  - host: httpbin.ky-rafaels.com
+    http: 
       paths:
       - backend:
           service:

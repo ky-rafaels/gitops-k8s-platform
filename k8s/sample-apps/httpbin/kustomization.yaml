@@ -3,3 +3,11 @@ kind: Kustomization
 resources:
 - httpbin.yaml
 - httpbin-route.yaml
+
+patches:
+- target:
+    kind: Ingress
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: "10.38.207.151.sslip.io"
