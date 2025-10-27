@@ -1,24 +1,3 @@
-# ---
-# apiVersion: gateway.networking.k8s.io/v1
-# kind: HTTPRoute
-# metadata:
-#   name: httpbin
-#   namespace: httpbin
-# spec:
-#   parentRefs:
-#   - name: gateway
-#     namespace: ingress-gtw
-#     sectionName: https
-#   hostnames: 
-#   - 'httpbin.ky-rafaels.com'
-#   rules:
-#   - matches:
-#     - path:
-#         type: PathPrefix
-#         value: /
-#     backendRefs:
-#     - name: httpbin
-#       port: 8000
 ---
 apiVersion: networking.k8s.io/v1 
 kind: Ingress 
@@ -42,8 +21,30 @@ spec:
             name: httpbin
             port:
               number: 8000
-        path: /dkp/kuberenetes/get
+        path: /get
         pathType: Prefix
+# kubernetes gateway api example:
+# ---
+# apiVersion: gateway.networking.k8s.io/v1
+# kind: HTTPRoute
+# metadata:
+#   name: httpbin
+#   namespace: httpbin
+# spec:
+#   parentRefs:
+#   - name: gateway
+#     namespace: ingress-gtw
+#     sectionName: https
+#   hostnames: 
+#   - 'httpbin.ky-rafaels.com'
+#   rules:
+#   - matches:
+#     - path:
+#         type: PathPrefix
+#         value: /
+#     backendRefs:
+#     - name: httpbin
+#       port: 8000
 # ---
 # kind: Role
 # apiVersion: rbac.authorization.k8s.io/v1
