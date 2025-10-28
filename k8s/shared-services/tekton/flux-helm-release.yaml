@@ -1,0 +1,56 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: tekton
+  namespace: flux-system  # Or your Flux namespace
+spec:
+  interval: 1h  # Poll for chart updates every hour
+  url: https://artifacthub.io/api/v1/packages/tektoncd/pipeline  # Official Tekton repo
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tekton-pipelines
+  namespace: tekton-pipelines  # Namespace where Tekton will be installed
+spec:
+  interval: 10m  # Reconcile every 10 minutes
+  chart:
+    spec:
+      chart: tekton-pipeline  # Chart name
+      version: "0.65.0"  # Pin to a version or use semver range like "~0.65.0"
+      sourceRef:
+        kind: HelmRepository
+        name: tekton  # References the repo above
+        namespace: flux-system
+      interval: 10m  # Poll the chart source every 10 minutes
+  targetNamespace: tekton-pipelines  # Install into this namespace (created if missing)
+  install:
+    createNamespace: true  # Auto-create the namespace
+    remediation:
+      retries: 3  # Retry failed installs up to 3 times
+  upgrade:
+    remediation:
+      retries: 3  # Retry failed upgrades up to 3 times
+  # Optional: Custom values (overrides defaults)
+  values:
+    # Example: Disable alpha features
+    controller:
+      options:
+        feature-flags: ""  # Empty string disables all alpha features
+    # Example: Custom service account annotations
+    serviceAccount:
+      annotations:
+        eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/tekton-role"  # If using IRSA/EKS
+  # Optional: Post-render hook for validation
+  postRenderers:
+    - kind: kustomize
+      spec:
+        images:
+          - name: gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/controller
+            newName: gcr.io/tekton-releases/github.com/tektoncd/triggers/cmd/controller
+  # Optional: Enable drift detection to prevent unauthorized changes
+  driftDetection:
+    mode: enabled
+    ignore:
+      - paths:  # Ignore changes to specific paths
+          - /spec/replicas  # e.g., ignore replica count drifts
