@@ -15,7 +15,7 @@ patchesJson6902:
       path: /spec/template/spec/containers/0/args/-
       value: --kubelet-insecure-tls
   
-images:
-  - name: registry.k8s.io/metrics-server/metrics-server:v0.7.0
-    newName: docker.io/chainguard/metrics-server
-    newTag: latest
+# images:
+#   - name: registry.k8s.io/metrics-server/metrics-server:v0.7.0
+#     newName: docker.io/chainguard/metrics-server
+#     newTag: v0.7.1 

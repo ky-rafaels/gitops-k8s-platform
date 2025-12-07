@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tekton-pipelines
+  labels:
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tekton-pipelines-source
+  namespace: flux-system   # Flux namespace
+spec:
+  interval: 1h
+  path: ./   # not used — we use `sourceRef` below
+  prune: true
+  sourceRef:
+    kind: Bucket
+    name: tekton-release
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: Bucket
+metadata:
+  name: tekton-release
+  namespace: flux-system
+spec:
+  interval: 1h
+  provider: generic
+  bucketName: tekton-releases
+  endpoint: storage.googleapis.com
+  insecure: false   # HTTPS
+  secretRef:
+    name: gcs-credentials   # Optional: if private bucket
+  # The file we want:
+  path: pipeline/latest/release.yaml
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tekton-pipelines
+  namespace: flux-system
+spec:
+  interval: 10m
+  targetNamespace: tekton-pipelines
+  sourceRef:
+    kind: Bucket
+    name: tekton-release
+  path: ./pipeline/latest   # Directory where `release.yaml` is synced
+  prune: true
+  wait: true
+  timeout: 5m
+  healthChecks:
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: tekton-pipelines-controller
+      namespace: tekton-pipelines
+    - apiVersion: apps/v1
+      kind: Deployment
+      name: tekton-pipelines-webhook
+      namespace: tekton-pipelines

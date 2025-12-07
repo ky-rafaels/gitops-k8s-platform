@@ -5,6 +5,6 @@ bases:
   - "../base"
 
 images:
-  - name: registry.k8s.io/metrics-server/metrics-server:v0.7.0
+  - name: registry.k8s.io/metrics-server/metrics-server:v0.8.0
     newName: docker.io/chainguard/metrics-server
-    newTag: latest
+    newTag: v0.8.0

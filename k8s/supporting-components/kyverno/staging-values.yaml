@@ -1,0 +1,95 @@
+crds:
+  migration:
+    image:
+      registry: ghcr.io
+config:
+  enableDefaultRegistryMutation: false
+  defaultRegistry: docker.io
+admissionController:
+  replicas: 1
+  initContainer:
+    image:
+      registry: ghcr.io
+      repository: kyverno/kyvernopre
+      # tag: latest
+  container:
+    image:
+      registry: ghcr.io
+      repository: kyverno/kyverno
+      # tag: latest
+    resources:
+      limits:
+        memory: 384Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    securityContext:
+      runAsNonRoot: true
+      privileged: false
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+webhooksCleanup:
+  image:
+    registry: docker.io
+    repository: bitnami/kubectl
+    tag: '1.28.5'
+    # pullPolicy: ~
+policyReportsCleanup:
+  image:
+    registry: docker.io
+    repository: bitnami/kubectl
+    tag: '1.28.5'
+    # pullPolicy: ~
+cleanupJobs:
+  admissionReports:
+    image:
+      registry: docker.io
+      repository: bitnami/kubectl
+      tag: '1.28.5'
+      # pullPolicy: ~
+  clusterAdmissionReports:
+    image:
+      registry: docker.io
+      repository: bitnami/kubectl
+      tag: '1.28.5'
+      # pullPolicy: ~
+  updateRequests:
+    image:
+      registry: docker.io
+      repository: bitnami/kubectl
+      tag: '1.28.5'
+      # pullPolicy: ~
+  ephemeralReports:
+    image:
+      registry: docker.io
+      repository: bitnami/kubectl
+      tag: '1.28.5'
+      # pullPolicy: ~
+  clusterEphemeralReports:
+    image:
+      registry: docker.io
+      repository: bitnami/kubectl
+      tag: '1.28.5'
+      # pullPolicy: ~
+
+backgroundController:
+  replicas: 1
+  image: 
+    registry: ghcr.io
+    repository: kyverno/background-controller
+    # tag: ~
+    # pullPolicy: IfNotPresent
+cleanupController:
+  replicas: 1
+  image:
+    registry: ghcr.io
+    repository: kyverno/cleanup-controller
+    # tag: ~
+    # pullPolicy: IfNotPresent
+reportsController:
+  replicas: 1
+  image: 
+    registry: ghcr.io
+    repository: kyverno/reports-controller
+    # tag: ~
+    # pullPolicy: IfNotPresent
