@@ -12,7 +12,7 @@ metadata:
 spec:
   ingressClassName: kommander-traefik
   rules:
-  - host: "10.38.207.151.httpbin.sslip.io" 
+  - host: 10.38.207.151.httpbin.nip.io
     http: 
       paths:
       - backend:
@@ -24,7 +24,7 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - 10.38.207.151.httpbin.sslip.io 
+    - 10.38.207.151.httpbin.nip.io 
     secretName: wildcard-tls
 
 # kubernetes gateway api example:
