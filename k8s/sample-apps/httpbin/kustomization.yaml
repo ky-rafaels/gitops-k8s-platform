@@ -10,4 +10,4 @@ patches:
   patch: |-
     - op: replace
       path: /spec/rules/0/host
-      value: "10.42.55.19.httpbin.sslip.io"
+      value: "10.38.207.151.httpbin.sslip.io"
