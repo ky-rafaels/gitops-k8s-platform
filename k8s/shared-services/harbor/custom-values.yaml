@@ -1,0 +1,142 @@
+core:
+  image:
+    repository: docker.io/chainguard/harbor-core
+    tag: latest
+jobservice:
+  replicas: 1
+  image:
+    repository: docker.io/chainguard/harbor-jobservice
+    tag: latest
+  jobLogger: "stdout"
+  resources:
+    requests: 
+      cpu: 100m
+      memory: 50Mi
+    limits: 
+      cpu: 400m
+      memory: 140Mi
+nginx:
+  image:
+    repository: docker.io/goharbor/nginx-photon
+    tag: v2.11.1
+portal:
+  image:
+    repository: docker.io/chainguard/harbor-portal
+    tag: latest
+registry:
+  registry: 
+    image:
+      repository: docker.io/chainguard/harbor-registry
+      tag: latest
+  controller:
+    image:
+      repository: docker.io/chainguard/harbor-registryctl
+      tag: latest
+database:
+  internal:
+    image: 
+      repository: docker.io/chainguard/harbor-db
+      tag: latest
+redis:
+  internal:
+    image:
+      repository: docker.io/goharbor/redis-photon
+      tag: v2.10.0
+trivy:
+  image:
+    repository: docker.io/chainguard/harbor-trivy-adapter
+    tag: latest
+  skipUpdate: true
+  offlineScan: true
+expose:
+  type: clusterIP
+  tls:
+    enabled: false
+    certSource: "none"
+    auto:
+      commonName: "harbor..chainguard.dev"
+    # secret:
+    #   secretName: "harbor-tls"
+  ingress:
+    hosts:
+      core: harbor..chainguard.dev
+    controller: default
+    kubeVersionOverride: ""
+    className: "istio"
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "true"
+      ingress.kubernetes.io/proxy-body-size: "0"
+    harbor:
+      # harbor ingress-specific annotations
+      annotations: {}
+      # harbor ingress-specific labels
+      labels: {}
+internalTLS:
+  enabled: false
+  strong_ssl_ciphers: false 
+  certSource: "auto"
+  # core:
+  #   # secret name for core's tls certs
+  #   secretName: ""
+  # # jobservice related cert configuration
+  # jobservice:
+  #   # secret name for jobservice's tls certs
+  #   secretName: ""
+  # # registry related cert configuration
+  # registry:
+  #   # secret name for registry's tls certs
+  #   secretName: ""
+  # # portal related cert configuration
+  # portal:
+  #   # secret name for portal's tls certs
+  #   secretName: ""
+  # # trivy related cert configuration
+  # trivy:
+  #   # secret name for trivy's tls certs
+  #   secretName: ""
+externalURL: https://harbor..chainguard.dev
+persistence:
+  enabled: true
+  persistentVolumeClaim:
+    registry:
+      # Use the existing PVC which must be created manually before bound,
+      # and specify the "subPath" if the PVC is shared with other components
+      existingClaim: ""
+      # Specify the "storageClass" used to provision the volume. Or the default
+      # StorageClass will be used (the default).
+      # Set it to "-" to disable dynamic provisioning
+      storageClass: "efs-csi-sc"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 5Gi
+      annotations: {}
+    jobservice:
+      jobLog:
+        existingClaim: ""
+        storageClass: "efs-csi-sc"
+        subPath: ""
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        annotations: {}
+    database:
+      existingClaim: ""
+      storageClass: "ebs-csi-sc"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      annotations: {}
+    redis:
+      existingClaim: ""
+      storageClass: "efs-csi-sc"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 1Gi
+      annotations: {}
+    trivy:
+      existingClaim: ""
+      storageClass: "efs-csi-sc"
+      subPath: ""
+      accessMode: ReadWriteOnce
+      size: 5Gi
+      annotations: {}
+logLavel: info

@@ -1,0 +1,28 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik 
+  namespace: argocd
+spec:
+  project: default
+  sources: 
+    - repoURL: https://traefik.github.io/charts
+      chart: mesosphere-staging/traefik 
+      targetRevision: 39.0.0
+      helm:
+        ignoreMissingValueFiles: true
+        valueFiles:
+          - $values/k8s/supporting-components/traefik/values.yaml
+    - repoURL: git@github.com:ky-rafaels/gitops-k8s-platform.git
+      targetRevision: main
+      ref: values
+  destination:
+    name: "in-cluster"
+    namespace: 'traefik'
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
