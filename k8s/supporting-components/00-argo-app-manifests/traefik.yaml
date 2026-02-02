@@ -14,7 +14,7 @@ spec:
         ignoreMissingValueFiles: true
         valueFiles:
           - $values/k8s/supporting-components/traefik/values.yaml
-    - repoURL: git@github.com:ky-rafaels/gitops-k8s-platform.git
+    - repoURL: https://github.com/ky-rafaels/gitops-k8s-platform.git 
       targetRevision: main
       ref: values
   destination:
