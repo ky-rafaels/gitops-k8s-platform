@@ -1,0 +1,134 @@
+apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
+kind: PreprovisionedInventory
+metadata:
+  name: ${CLUSTER_NAME}-control-plane
+  namespace: ${WORKSPACE_NAMESPACE}
+  labels:
+    cluster.x-k8s.io/cluster-name: ${CLUSTER_NAME}
+    clusterctl.cluster.x-k8s.io/move: ""
+spec:
+  hosts:
+    - address: ${CONTROL_PLANE_0_ADDRESS}
+  sshConfig:
+    port: 22
+    user: ${SSH_USER}
+    privateKeyRef:
+      name: ${SSH_PRIVATE_KEY_SECRET_NAME}
+      namespace: ${WORKSPACE_NAMESPACE}
+---
+apiVersion: cluster.x-k8s.io/v1beta1
+kind: Cluster
+metadata:
+  labels:
+    konvoy.d2iq.io/cluster-name: ${CLUSTER_NAME}
+    konvoy.d2iq.io/provider: preprovisioned
+  name: ${CLUSTER_NAME}
+  namespace: ${WORKSPACE_NAMESPACE}
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+    services:
+      cidrBlocks:
+      - 10.96.0.0/12
+  controlPlaneEndpoint:
+    host: ""
+    port: 0
+  controlPlaneRef:
+  controlPlaneRef:
+    kind: MicroK8sControlPlane
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+    name: ${CLUSTER_NAME}-control-plane      
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
+    kind: PreprovisionedCluster
+    name: ${CLUSTER_NAME}
+    namespace: ${WORKSPACE_NAMESPACE}
+---
+apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
+kind: PreprovisionedCluster
+metadata:
+  name: ${CLUSTER_NAME}
+  namespace: ${WORKSPACE_NAMESPACE}
+  labels:
+    cluster.x-k8s.io/cluster-name: ${CLUSTER_NAME}
+spec:
+  controlPlaneEndpoint:
+    host: ${CONTROL_PLANE_ENDPOINT_HOST} 
+    port: 6443
+---
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
+kind: MicroK8sControlPlane
+metadata:
+  name: "${CLUSTER_NAME}-control-plane"
+  namespace: ${WORKSPACE_NAMESPACE}
+  labels:
+    cluster.x-k8s.io/cluster-name: ${CLUSTER_NAME}
+spec:
+  controlPlaneConfig:
+    initConfiguration:
+      joinTokenTTLInSecs: 900000
+      IPinIP: true
+      riskLevel: "stable"
+      confinement: "classic"
+      postRunCommands:
+        - ln -s /var/snap/microk8s/common/run/containerd.sock /run/containerd/containerd.sock > /dev/null 2>/dev/null  || true  
+        - /tmp/configure-registry.sh 
+        - microk8s stop && microk8s start
+        - microk8s enable dns  
+        - microk8s enable metallb:${METALLB_RANGE}
+        - microk8s enable hostpath-storage
+      extraWriteFiles:
+        - content: |
+            cat <<EOF >> /var/snap/microk8s/current/args/containerd-template.toml
+                  [plugins."io.containerd.grpc.v1.cri".registry.configs]
+                    [plugins."io.containerd.grpc.v1.cri".registry.configs."registry-1.docker.io".auth]
+                      username = "devopsab"
+                      password = "D2iQ@dm1n"
+            EOF
+          path: /tmp/configure-registry.sh
+          owner: root:root
+          permissions: '0700'
+        - content: |
+            ---
+            apiVersion: kubeadm.k8s.io/v1beta4
+            kind: InitConfiguration
+            localAPIEndpoint: {}
+            nodeRegistration:
+              criSocket: unix:///run/containerd/containerd.sock
+              imagePullPolicy: IfNotPresent
+              kubeletExtraArgs:
+              - name: cloud-provider
+                value: ""
+              - name: provider-id
+                value: '{{ .ProviderID }}'
+              taints: null              
+          path: /run/kubeadm/kubeadm.yaml
+          owner: root:root
+          permissions: '0640'      
+    clusterConfiguration:
+      portCompatibilityRemap: true
+  machineTemplate:
+    infrastructureTemplate:
+      apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
+      kind: PreprovisionedMachineTemplate
+      name: ${CLUSTER_NAME}-control-plane
+      namespace: ${WORKSPACE_NAMESPACE}
+  replicas: 1
+  version: "${KUBERNETES_VERSION}"
+  upgradeStrategy: "SmartUpgrade"
+---
+apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
+kind: PreprovisionedMachineTemplate
+metadata:
+  name: ${CLUSTER_NAME}-control-plane
+  namespace: ${WORKSPACE_NAMESPACE}
+  labels:
+    cluster.x-k8s.io/cluster-name: ${CLUSTER_NAME}    
+spec:
+  template:
+    spec:
+      inventoryRef:
+        name: ${CLUSTER_NAME}-control-plane
+        namespace: ${WORKSPACE_NAMESPACE}
