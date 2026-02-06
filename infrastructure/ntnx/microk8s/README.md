@@ -67,9 +67,9 @@ kubectl create secret generic ${SSH_PRIVATE_KEY_SECRET_NAME} -n ${WORKSPACE_NAME
 ```
 
 ## Validate and apply microk8s CAPI manifests
-`envsubst < <(cat microk8s-inventory.yaml) | kubectl apply -f -`
-**OR**
-`clusterctl generate cluster microk8s-nutanix --from microk8s-inventory.yaml -n microk8s | kubectl apply -f -`
+```bash
+clusterctl generate cluster microk8s-nutanix --from microk8s-inventory.yaml -n microk8s | kubectl apply -f -
+```
 
 ## Validate cluster health and attach to mgmt cluster
 ```bash
