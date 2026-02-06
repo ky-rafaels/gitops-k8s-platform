@@ -1,0 +1,36 @@
+#cloud-config
+fqdn: microk8s-4
+hostname: microk8s-4
+ssh_pwauth: true
+disable_root: false
+users:
+  - default
+  - name: nutanix
+    groups: users,sudo,docker
+    plain_text_passwd: nutanix2026!
+    lock_passwd: false
+    sudo:
+      - ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+  - name: ubuntu
+    groups: users,sudo,docker
+    lock_passwd: false
+    sudo:
+      - ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+chpasswd:
+  expire: false
+  users:
+    - name: ubuntu
+      password: ubuntu2026!
+      type: text
+runcmd:
+  - systemctl restart ssh
+  - systemctl enable ssh
+# Package updates
+package_update: true
+package_upgrade: true
+# Install essential packages
+packages:
+  - openssh-server
+  - sudo

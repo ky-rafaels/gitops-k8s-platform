@@ -35,19 +35,26 @@ subjects:
 EOF
 
 # Create lima VM to be used for microk8s cluster
-limactl create --network=lima:shared --name=ubuntu-22.04 template://ubuntu-22.04 --memory 8 --cpus 4 --disk 150
-limactl start ubuntu-22.04
+# limactl create --network=lima:shared --name=ubuntu-22.04 template://ubuntu-22.04 --memory 8 --cpus 4 --disk 150
+# limactl start ubuntu-22.04
+
+# Create an ssh key for VM
+ssh-keygen # name microk8s
+ssh-copy-id -i ~/.ssh/microk8s.pub ubuntu@10.38.176.95
+
+# Test login
+ssh -i ~/.ssh/microk8s ubuntu@10.38.176.95
 
 # Export env vars describing ubuntu vm
 export CLUSTER_NAME=microk8s-nutanix
 export WORKSPACE_NAMESPACE=microk8s
-export CONTROL_PLANE_0_ADDRESS=192.168.105.2
-export CONTROL_PLANE_ENDPOINT_HOST=192.168.105.2
-export METALLB_RANGE=172.16.0.41-172.16.0.44
-export INGRESS_HOST=172.16.0.41
-export SSH_USER=kylerafaels
+export CONTROL_PLANE_0_ADDRESS=10.38.176.95
+export CONTROL_PLANE_ENDPOINT_HOST=10.38.176.95
+export METALLB_RANGE=10.38.176.60-10.38.176.64
+export INGRESS_HOST=10.38.176.60
+export SSH_USER=ubuntu
 export SSH_PRIVATE_KEY_SECRET_NAME="$CLUSTER_NAME-ssh-key"
-export SSH_PRIVATE_KEY_FILE=/Users/kylerafaels/.lima/_config/user
+export SSH_PRIVATE_KEY_NAME=/root/.ssh/microk8s
 export KUBERNETES_VERSION=v1.34.1
 
 # Create secret representing private key for ubuntu vm edge cluster
