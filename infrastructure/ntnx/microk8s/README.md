@@ -33,19 +33,21 @@ subjects:
   name: capi-microk8s-control-plane-controller-manager
   namespace: capi-microk8s-control-plane-system
 EOF
+```
 
-# Create lima VM to be used for microk8s cluster
-# limactl create --network=lima:shared --name=ubuntu-22.04 template://ubuntu-22.04 --memory 8 --cpus 4 --disk 150
-# limactl start ubuntu-22.04
+### *NOTE: Deploy an ubuntu VM using the cloud-init script ./vm-cloud-init.yaml*
 
-# Create an ssh key for VM
+## Create an ssh key for VM
+```bash
 ssh-keygen # name microk8s
 ssh-copy-id -i ~/.ssh/microk8s.pub ubuntu@10.38.176.95
 
 # Test login
 ssh -i ~/.ssh/microk8s ubuntu@10.38.176.95
+```
 
-# Export env vars describing ubuntu vm
+## Export env vars describing ubuntu vm
+```bash
 export CLUSTER_NAME=microk8s-nutanix
 export WORKSPACE_NAMESPACE=microk8s
 export CONTROL_PLANE_0_ADDRESS=10.38.176.95
@@ -56,13 +58,31 @@ export SSH_USER=ubuntu
 export SSH_PRIVATE_KEY_SECRET_NAME="$CLUSTER_NAME-ssh-key"
 export SSH_PRIVATE_KEY_NAME=/root/.ssh/microk8s
 export KUBERNETES_VERSION=v1.34.1
+```
 
-# Create secret representing private key for ubuntu vm edge cluster
+## Create secret representing private key for ubuntu vm edge cluster
+```bash
 kubectl create namespace microk8s
-kubectl create secret generic ${SSH_PRIVATE_KEY_SECRET_NAME} -n ${WORKSPACE_NAMESPACE} --from-file=ssh-privatekey=${SSH_PRIVATE_KEY_FILE} 
+kubectl create secret generic ${SSH_PRIVATE_KEY_SECRET_NAME} -n ${WORKSPACE_NAMESPACE} --from-file=ssh-privatekey=${SSH_PRIVATE_KEY_FILE}
+```
 
-# Validate and apply microk8s CAPI manifests
-envsubst < <(cat microk8s-inventory.yaml) | kubectl apply -f -
-# OR
-clusterctl generate cluster microk8s-nutanix --from microk8s-inventory.yaml -n microk8s | kubectl apply -f -
+## Validate and apply microk8s CAPI manifests
+`envsubst < <(cat microk8s-inventory.yaml) | kubectl apply -f -`
+**OR**
+`clusterctl generate cluster microk8s-nutanix --from microk8s-inventory.yaml -n microk8s | kubectl apply -f -`
+
+## Validate cluster health and attach to mgmt cluster
+```bash
+nkp describe cluster -n microk8s -c microk8s-nutanix
+NAME                                                                  	READY  SEVERITY  REASON  SINCE  MESSAGE
+Cluster/preprov-microk8s-pro                                          	True                 	24h      	 
+├─ClusterInfrastructure - PreprovisionedCluster/preprov-microk8s-pro                                        	 
+└─ControlPlane - MicroK8sControlPlane/preprov-microk8s-pro-control-plane True                 	24h      	 
+  └─Machine/preprov-microk8s-pro-control-plane-ll77t                  	True                 	24h
+```
+
+### Then attach cluster to MGMT cluster with kubeconfig
+```bash
+nkp get kubeconfig -n microk8s -c microk8s-nutanix > microk8s-kubeconfig.conf
+export KUBECONFIG=$(pwd)/microk8s-kubeconfig.conf
 ```
