@@ -30,7 +30,6 @@ runcmd:
   - wget https://raw.githubusercontent.com/ky-rafaels/gitops-k8s-platform/refs/heads/main/infrastructure/ntnx/scripts/ubuntu-bastion-bootstrap.sh
   - chmod +x ./ubuntu-bastion-bootstrap.sh
   - ./ubuntu-bastion-bootstrap.sh 2>&1 | tee ./ubuntu-bastion-bootstrap-log.txt
-  - cp ./ubuntu-bastion-bootstrap.sh /dev2/sh
   - eject
 # Package updates
 package_update: true

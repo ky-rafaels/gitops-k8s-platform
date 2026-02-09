@@ -53,7 +53,7 @@ usage(){
   echo ""
   echo ""
 
-mkdir -P /data/install
+mkdir -p /data/install
 cd /data/install
 #
 # Add Network Stuff
