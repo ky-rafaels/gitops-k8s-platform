@@ -15,19 +15,7 @@ apt-get install  -y pkgconf
 #
 # Setup K8s
 #
-curl -O https://dl.k8s.io/release/v1.34.1/bin/linux/amd64/kubectl 	
-install -o root -g root -m 0755 /data/install/kubectl /usr/local/bin/kubectl     
-mv /data/install/kubectl /data/install/kubectl-v1.34.1-linux-amd64         					
-
-#
-# Bash-Completion
-#
-source <(kubectl completion bash)																			
-
-echo "source <(kubectl completion bash)" >> ~/.bashrc  
-alias k="kubectl"
-
-complete -F __start_kubectl k																					
+snap install --classic kubectl    					
 
 #
 # K8s Utilities
@@ -44,13 +32,13 @@ apt-get install  -y kubectx
 # Helm
 #	
 curl -O https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 /data/install/get-helm-3 /data/install/get-helm-3
+chmod +x /data/install/get-helm-3
+cp /data/install/get-helm-3 /usr/local/bin/helm
 
 # Setup K9s
 
 curl -O https://github.com/derailed/k9s/releases/download/v0.50.9/k9s_linux_amd64.deb
-mv /data/install/k9s_linux_amd64.deb /data/install/k9s_linux_amd64-v0.50.9.deb
-apt-get install  -y /data/install/k9s_linux_amd64-v0.50.9.deb
+apt-get install  -y /data/install/k9s_linux_amd64.deb
 
 #
 # Setup Kind
@@ -69,8 +57,8 @@ install -o root -g root -m 0755 /data/install/fzf /usr/local/bin/fzf
 # Setup Flux
 #
 curl -O https://fluxcd.io/install.sh
-mv /data/install/install.sh /data/install/flux-install.sh
-chmod +x /data/install/flux-install.sh /data/install/flux-install.sh  
+chmod +x /data/install/flux-install.sh 
+/data/install/flux-install.sh
 
 #
 # Setup Docker FORCE VERSION 28.0.4
