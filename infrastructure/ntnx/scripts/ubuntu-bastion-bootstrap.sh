@@ -31,9 +31,7 @@ apt-get install  -y kubectx
 #
 # Helm
 #	
-curl -O https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod +x /data/install/get-helm-3
-cp /data/install/get-helm-3 /usr/local/bin/helm
+snap install --classic helm
 
 # Setup K9s
 
