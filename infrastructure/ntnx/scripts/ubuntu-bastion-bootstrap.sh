@@ -3,56 +3,6 @@
 
 #  set -x
 
-
-usage(){
-   			echo " "
-   			echo " "
-   			echo " "
-   			echo "Usage:   $0		-Sets up a basic Ubuntu JumpBox with my utilties and such."
-   			echo " "
-   			echo "              -REQUIRES eVars: "
-   			echo "                    NUTANIX_VERSION"
-   			echo "                    NUTANIX_ARTIFACT_HOST"   			
-   			echo " "
-   			echo " -H/-h        -Display this help message."
-   			echo " "
-   			echo " "
-   			echo " "
-	exit 1
-}
-
-
-	if [ "$1" == "--help" ] || [  "$1" == "--H" ] || [ "$1" == "--h" ] || [  "$1" == "-H" ] || [ "$1" == "-h" ]
-	  then
-	    usage
-	fi
-
-	
-  echo ""
-  
-	if [[ -v NUTANIX_VERSION ]]; then
-
-	    echo "NUTANIX_VERSION: $NUTANIX_VERSION"
-	    
-	else
-			echo ""
-	    echo " ***ERROR*** evar NUTANIX_VERSION is MISSING!"
-	    usage
-	fi	
-	
-	if [[ -v NUTANIX_ARTIFACT_HOST ]]; then
-
-	    echo "NUTANIX_ARTIFACT_HOST: $NUTANIX_ARTIFACT_HOST"
-	    
-	else
-			echo ""
-	    echo " ***ERROR*** evar NUTANIX_ARTIFACT_HOST is MISSING!"
-	    usage
-	fi	
-
-  echo ""
-  echo ""
-
 mkdir -p /data/install
 cd /data/install
 #
