@@ -443,7 +443,7 @@ metadata:
   namespace: default
 spec:
   hosts:
-  - address: 192.168.1.115
+  - address: 192.168.1.49
   sshConfig:
     port: 22
     privateKeyRef:
