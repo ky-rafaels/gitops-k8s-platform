@@ -24,7 +24,7 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - 10.38.207.151.httpbin.nip.io 
+    - 192.168.1.30.httpbin.nip.io
     secretName: wildcard-tls
 
 # kubernetes gateway api example:
