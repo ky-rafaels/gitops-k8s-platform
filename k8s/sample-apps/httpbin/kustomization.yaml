@@ -10,4 +10,4 @@ patches:
   patch: |-
     - op: replace
       path: /spec/rules/0/host
-      value: "10.38.207.151.httpbin.nip.io"
+      value: "192.168.1.30.httpbin.nip.io"
