@@ -12,11 +12,18 @@
 
 # Deployment
 
-export NODE_IP=192.168.1.115
-export VIP_INTERFACE=en08303
-export CLUSTER_NAME="nkp-2-17"
-export CONTROL_PLANE_VIP="192.168.1.51"
-export SSH_USER=nutanix
 export SSH_PRIVATE_KEY_FILE=/Users/kylerafaels/.ssh/nkp-control
-export SSH_PRIVATE_KEY_SECRET_NAME="nkp-2-17-ssh-key"
-export SSH_PORT=22
+
+
+## Create preprovisioned cluster templates
+
+```bash
+nkp create cluster preprovisioned \
+--cluster-name nkp-workload-1 \
+--control-plane-endpoint-host 192.168.1.29 \
+--control-plane-replicas 1 \
+--worker-replicas 0 \
+--ssh-private-key-file ${SSH_PRIVATE_KEY_FILE} \
+--pre-provisioned-inventory-file worker-preprovisioned-inventory.yaml \
+--dry-run -o yaml > workload-nkp-2-17.yaml
+```
