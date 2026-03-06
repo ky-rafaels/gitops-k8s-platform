@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  value: a2luZDogRW5jcnlwdGlvbkNvbmZpZwphcGlWZXJzaW9uOiB2MQpyZXNvdXJjZXM6CiAgLSByZXNvdXJjZXM6CiAgICAgIC0gc2VjcmV0cwogICAgICAtIGNvbmZpZ21hcHMKICAgIHByb3ZpZGVyczoKICAgICAgLSBhZXNjYmM6CiAgICAgICAgICBrZXlzOgogICAgICAgICAgICAtIG5hbWU6IGtleQogICAgICAgICAgICAgIHNlY3JldDogNGlCZmFEaUpXdHlYbkN2ZGJkZjFuTGlJVm95MFZHdkVIaHpxQUNNZGxjTT0KICAgICAgLSBpZGVudGl0eToge30=
+  value: a2luZDogRW5jcnlwdGlvbkNvbmZpZwphcGlWZXJzaW9uOiB2MQpyZXNvdXJjZXM6CiAgLSByZXNvdXJjZXM6CiAgICAgIC0gc2VjcmV0cwogICAgICAtIGNvbmZpZ21hcHMKICAgIHByb3ZpZGVyczoKICAgICAgLSBhZXNjYmM6CiAgICAgICAgICBrZXlzOgogICAgICAgICAgICAtIG5hbWU6IGtleQogICAgICAgICAgICAgIHNlY3JldDogYitmVzNpQmNTUndqWFR3NnhmTGJXVGM5UFBNRHpIQjBvcVFLbXl5SU12bz0KICAgICAgLSBpZGVudGl0eToge30=
 kind: Secret
 metadata:
   labels:
@@ -37,7 +37,7 @@ spec:
   clusterNetwork:
     pods:
       cidrBlocks:
-      - 172.16.0.0/16
+      - 171.16.0.0/16
     services:
       cidrBlocks:
       - 10.96.0.0/12
@@ -447,7 +447,7 @@ spec:
   sshConfig:
     port: 22
     privateKeyRef:
-      name: nkp-2-17-ssh-key
+      name: nkp-workload-1-ssh-key
       namespace: edge-workload
     user: nutanix
 ---
@@ -653,7 +653,7 @@ spec:
   sshConfig:
     port: 22
     privateKeyRef:
-      name: nkp-2-17-ssh-key
+      name: nkp-workload-1-ssh-key
       namespace: edge-workload
     user: nutanix
 ---
@@ -692,7 +692,7 @@ data:
         # Note: The ipPools section cannot be modified post-install.
         ipPools:
         - blockSize: 26
-          cidr: 172.16.0.0/16
+          cidr: 171.16.0.0/16
           encapsulation: IPIP
           natOutgoing: Enabled
           nodeSelector: all()
