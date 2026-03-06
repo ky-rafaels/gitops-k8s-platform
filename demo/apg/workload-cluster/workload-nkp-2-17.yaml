@@ -1,13 +1,13 @@
 apiVersion: v1
 data:
-  value: a2luZDogRW5jcnlwdGlvbkNvbmZpZwphcGlWZXJzaW9uOiB2MQpyZXNvdXJjZXM6CiAgLSByZXNvdXJjZXM6CiAgICAgIC0gc2VjcmV0cwogICAgICAtIGNvbmZpZ21hcHMKICAgIHByb3ZpZGVyczoKICAgICAgLSBhZXNjYmM6CiAgICAgICAgICBrZXlzOgogICAgICAgICAgICAtIG5hbWU6IGtleQogICAgICAgICAgICAgIHNlY3JldDogYitmVzNpQmNTUndqWFR3NnhmTGJXVGM5UFBNRHpIQjBvcVFLbXl5SU12bz0KICAgICAgLSBpZGVudGl0eToge30=
+  value: a2luZDogRW5jcnlwdGlvbkNvbmZpZwphcGlWZXJzaW9uOiB2MQpyZXNvdXJjZXM6CiAgLSByZXNvdXJjZXM6CiAgICAgIC0gc2VjcmV0cwogICAgICAtIGNvbmZpZ21hcHMKICAgIHByb3ZpZGVyczoKICAgICAgLSBhZXNjYmM6CiAgICAgICAgICBrZXlzOgogICAgICAgICAgICAtIG5hbWU6IGtleQogICAgICAgICAgICAgIHNlY3JldDogWmZ3UDlHb01wT1crZlFxSSt4VjB3WEpFWHhLb2ZZd1JYZDFUblBMQUJDOD0KICAgICAgLSBpZGVudGl0eToge30=
 kind: Secret
 metadata:
   labels:
     cluster.x-k8s.io/cluster-name: nkp-workload-1
     clusterctl.cluster.x-k8s.io/move: ""
   name: nkp-workload-1-etcd-encryption-config
-  namespace: edge-workload
+  namespace: default
 type: Opaque
 ---
 apiVersion: v1
@@ -18,7 +18,7 @@ metadata:
   labels:
     clusterctl.cluster.x-k8s.io/move: ""
   name: nkp-workload-1-ssh-key
-  namespace: edge-workload
+  namespace: default
 type: Opaque
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
@@ -32,12 +32,12 @@ metadata:
     konvoy.d2iq.io/loadbalancer: metallb
     konvoy.d2iq.io/provider: preprovisioned
   name: nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 spec:
   clusterNetwork:
     pods:
       cidrBlocks:
-      - 171.16.0.0/16
+      - 192.168.0.0/16
     services:
       cidrBlocks:
       - 10.96.0.0/12
@@ -48,18 +48,18 @@ spec:
     apiVersion: controlplane.cluster.x-k8s.io/v1beta1
     kind: KubeadmControlPlane
     name: nkp-workload-1-control-plane
-    namespace: edge-workload
+    namespace: default
   infrastructureRef:
     apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
     kind: PreprovisionedCluster
     name: nkp-workload-1
-    namespace: edge-workload
+    namespace: default
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: KubeadmControlPlane
 metadata:
   name: nkp-workload-1-control-plane
-  namespace: edge-workload
+  namespace: default
 spec:
   kubeadmConfigSpec:
     clusterConfiguration:
@@ -400,7 +400,7 @@ spec:
       apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
       kind: PreprovisionedMachineTemplate
       name: nkp-workload-1-control-plane
-      namespace: edge-workload
+      namespace: default
     metadata: {}
   replicas: 1
   rolloutBefore:
@@ -415,7 +415,7 @@ apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
 kind: PreprovisionedCluster
 metadata:
   name: nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 spec:
   controlPlaneEndpoint:
     host: 192.168.1.29
@@ -425,22 +425,22 @@ apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
 kind: PreprovisionedMachineTemplate
 metadata:
   name: nkp-workload-1-control-plane
-  namespace: edge-workload
+  namespace: default
 spec:
   template:
     spec:
       inventoryRef:
         name: nkp-workload-1-control-plane
-        namespace: edge-workload
+        namespace: default
 ---
 apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
 kind: PreprovisionedInventory
 metadata:
   labels:
-    cluster.x-k8s.io/cluster-name: workload-nkp-2-17
+    cluster.x-k8s.io/cluster-name: nkp-workload-1
     clusterctl.cluster.x-k8s.io/move: ""
   name: nkp-workload-1-control-plane
-  namespace: edge-workload
+  namespace: default
 spec:
   hosts:
   - address: 192.168.1.48
@@ -448,7 +448,7 @@ spec:
     port: 22
     privateKeyRef:
       name: nkp-workload-1-ssh-key
-      namespace: edge-workload
+      namespace: default
     user: nutanix
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
@@ -457,7 +457,7 @@ metadata:
   labels:
     cluster.x-k8s.io/cluster-name: nkp-workload-1
   name: nkp-workload-1-md-0
-  namespace: edge-workload
+  namespace: default
 spec:
   clusterName: nkp-workload-1
   minReadySeconds: 0
@@ -484,32 +484,32 @@ spec:
           apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
           kind: KubeadmConfigTemplate
           name: nkp-workload-1-md-0
-          namespace: edge-workload
+          namespace: default
       clusterName: nkp-workload-1
       infrastructureRef:
         apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
         kind: PreprovisionedMachineTemplate
         name: nkp-workload-1-md-0
-        namespace: edge-workload
+        namespace: default
       version: v1.34.1
 ---
 apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
 kind: PreprovisionedMachineTemplate
 metadata:
   name: nkp-workload-1-md-0
-  namespace: edge-workload
+  namespace: default
 spec:
   template:
     spec:
       inventoryRef:
         name: nkp-workload-1-md-0
-        namespace: edge-workload
+        namespace: default
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: KubeadmConfigTemplate
 metadata:
   name: nkp-workload-1-md-0
-  namespace: edge-workload
+  namespace: default
 spec:
   template:
     metadata: {}
@@ -643,10 +643,10 @@ apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
 kind: PreprovisionedInventory
 metadata:
   labels:
-    cluster.x-k8s.io/cluster-name: workload-nkp-2-17
+    cluster.x-k8s.io/cluster-name: nkp-workload-1
     clusterctl.cluster.x-k8s.io/move: ""
   name: nkp-workload-1-md-0
-  namespace: edge-workload
+  namespace: default
 spec:
   hosts:
   - {}
@@ -654,7 +654,7 @@ spec:
     port: 22
     privateKeyRef:
       name: nkp-workload-1-ssh-key
-      namespace: edge-workload
+      namespace: default
     user: nutanix
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta1
@@ -663,7 +663,7 @@ metadata:
   labels:
     konvoy.d2iq.io/cluster-name: nkp-workload-1
   name: calico-cni-installation-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 spec:
   clusterSelector:
     matchLabels:
@@ -692,7 +692,7 @@ data:
         # Note: The ipPools section cannot be modified post-install.
         ipPools:
         - blockSize: 26
-          cidr: 171.16.0.0/16
+          cidr: 192.168.0.0/16
           encapsulation: IPIP
           natOutgoing: Enabled
           nodeSelector: all()
@@ -714,7 +714,7 @@ data:
 kind: ConfigMap
 metadata:
   name: calico-cni-installation-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 ---
 apiVersion: v1
 data:
@@ -723,7 +723,7 @@ data:
 kind: ConfigMap
 metadata:
   name: tigera-operator-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
@@ -731,7 +731,7 @@ metadata:
   labels:
     konvoy.d2iq.io/cluster-name: nkp-workload-1
   name: local-volume-provisioner-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 spec:
   clusterSelector:
     matchLabels:
@@ -869,7 +869,7 @@ data:
 kind: ConfigMap
 metadata:
   name: local-volume-provisioner-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
@@ -877,7 +877,7 @@ metadata:
   labels:
     konvoy.d2iq.io/cluster-name: nkp-workload-1
   name: cosi-controller-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 spec:
   clusterSelector:
     matchLabels:
@@ -1580,7 +1580,7 @@ data:
 kind: ConfigMap
 metadata:
   name: cosi-controller-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
@@ -1588,7 +1588,7 @@ metadata:
   labels:
     konvoy.d2iq.io/cluster-name: nkp-workload-1
   name: node-feature-discovery-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 spec:
   clusterSelector:
     matchLabels:
@@ -2976,7 +2976,7 @@ data:
 kind: ConfigMap
 metadata:
   name: node-feature-discovery-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
@@ -2985,7 +2985,7 @@ metadata:
     app: metallb
     konvoy.d2iq.io/cluster-name: nkp-workload-1
   name: metallb-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
 spec:
   clusterSelector:
     matchLabels:
@@ -5194,4 +5194,4 @@ metadata:
     app: metallb
     konvoy.d2iq.io/cluster-name: nkp-workload-1
   name: metallb-installation-nkp-workload-1
-  namespace: edge-workload
+  namespace: default
