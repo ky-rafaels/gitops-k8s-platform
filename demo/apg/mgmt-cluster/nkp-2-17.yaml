@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  value: a2luZDogRW5jcnlwdGlvbkNvbmZpZwphcGlWZXJzaW9uOiB2MQpyZXNvdXJjZXM6CiAgLSByZXNvdXJjZXM6CiAgICAgIC0gc2VjcmV0cwogICAgICAtIGNvbmZpZ21hcHMKICAgIHByb3ZpZGVyczoKICAgICAgLSBhZXNjYmM6CiAgICAgICAgICBrZXlzOgogICAgICAgICAgICAtIG5hbWU6IGtleQogICAgICAgICAgICAgIHNlY3JldDogVnpobmY0ZjdBTkJ6d3NtUWRQYjlINVJxWnVsQ084TXYzL3lwNUpqWThKYz0KICAgICAgLSBpZGVudGl0eToge30=
+  value: a2luZDogRW5jcnlwdGlvbkNvbmZpZwphcGlWZXJzaW9uOiB2MQpyZXNvdXJjZXM6CiAgLSByZXNvdXJjZXM6CiAgICAgIC0gc2VjcmV0cwogICAgICAtIGNvbmZpZ21hcHMKICAgIHByb3ZpZGVyczoKICAgICAgLSBhZXNjYmM6CiAgICAgICAgICBrZXlzOgogICAgICAgICAgICAtIG5hbWU6IGtleQogICAgICAgICAgICAgIHNlY3JldDogejR3bWhvM1FWTkpETWM0VU53VGo4L09UdGFRVndYVVhPODlZZ2Y5SXl0az0KICAgICAgLSBpZGVudGl0eToge30=
 kind: Secret
 metadata:
   labels:
@@ -10,11 +10,20 @@ metadata:
   namespace: default
 type: Opaque
 ---
+apiVersion: v1
+data:
+  ssh-privatekey: LS0tLS1CRUdJTiBPUEVOU1NIIFBSSVZBVEUgS0VZLS0tLS0KYjNCbGJuTnphQzFyWlhrdGRqRUFBQUFBQkc1dmJtVUFBQUFFYm05dVpRQUFBQUFBQUFBQkFBQUFNd0FBQUF0emMyZ3RaVwpReU5UVXhPUUFBQUNCRit3Rm1FZEVHSHRVTytLNjBIS293S3U4SERhTFVvejFnTWFxR0gxM1Fsd0FBQUtBYlVqdWtHMUk3CnBBQUFBQXR6YzJndFpXUXlOVFV4T1FBQUFDQkYrd0ZtRWRFR0h0VU8rSzYwSEtvd0t1OEhEYUxVb3oxZ01hcUdIMTNRbHcKQUFBRUJ0clVXdlRSZDVLd3E1ZHZaQTgrd21lckloSC9BOHVaT2Z6QUh0OWMrS3FrWDdBV1lSMFFZZTFRNzRyclFjcWpBcQo3d2NOb3RTalBXQXhxb1lmWGRDWEFBQUFHbXQ1YkdWeVlXWmhaV3h6UUUxaFkwSnZiMnRRY204dWJHRnVBUUlECi0tLS0tRU5EIE9QRU5TU0ggUFJJVkFURSBLRVktLS0tLQo=
+kind: Secret
+metadata:
+  labels:
+    clusterctl.cluster.x-k8s.io/move: ""
+  name: nkp-2-17-ssh-key
+  namespace: default
+type: Opaque
+---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
-  finalizers:
-  - cluster.cluster.x-k8s.io
   labels:
     konvoy.d2iq.io/cluster-name: nkp-2-17
     konvoy.d2iq.io/cni: calico
@@ -33,7 +42,7 @@ spec:
       cidrBlocks:
       - 10.96.0.0/12
   controlPlaneEndpoint:
-    host: 192.168.1.49
+    host: "192.168.1.49"
     port: 6443
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1beta1
@@ -49,19 +58,8 @@ spec:
 apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: KubeadmControlPlane
 metadata:
-  finalizers:
-  - kubeadm.controlplane.cluster.x-k8s.io
-  labels:
-    cluster.x-k8s.io/cluster-name: nkp-2-17
   name: nkp-2-17-control-plane
   namespace: default
-  ownerReferences:
-  - apiVersion: cluster.x-k8s.io/v1beta1
-    blockOwnerDeletion: true
-    controller: true
-    kind: Cluster
-    name: nkp-2-17
-    uid: 08db5548-7325-45d4-886a-3e35bc22ce3d
 spec:
   kubeadmConfigSpec:
     clusterConfiguration:
@@ -416,19 +414,8 @@ spec:
 apiVersion: infrastructure.cluster.konvoy.d2iq.io/v1alpha1
 kind: PreprovisionedCluster
 metadata:
-  finalizers:
-  - preprovisionedcluster.infrastructure.cluster.konvoy.d2iq.io
-  labels:
-    cluster.x-k8s.io/cluster-name: nkp-2-17
   name: nkp-2-17
   namespace: default
-  ownerReferences:
-  - apiVersion: cluster.x-k8s.io/v1beta1
-    blockOwnerDeletion: true
-    controller: true
-    kind: Cluster
-    name: nkp-2-17
-    uid: 08db5548-7325-45d4-886a-3e35bc22ce3d
 spec:
   controlPlaneEndpoint:
     host: 192.168.1.49
@@ -439,11 +426,6 @@ kind: PreprovisionedMachineTemplate
 metadata:
   name: nkp-2-17-control-plane
   namespace: default
-  ownerReferences:
-  - apiVersion: cluster.x-k8s.io/v1beta1
-    kind: Cluster
-    name: nkp-2-17
-    uid: 08db5548-7325-45d4-886a-3e35bc22ce3d
 spec:
   template:
     spec:
@@ -459,11 +441,6 @@ metadata:
     clusterctl.cluster.x-k8s.io/move: ""
   name: nkp-2-17-control-plane
   namespace: default
-  ownerReferences:
-  - apiVersion: cluster.x-k8s.io/v1beta1
-    kind: Cluster
-    name: nkp-2-17
-    uid: 08db5548-7325-45d4-886a-3e35bc22ce3d
 spec:
   hosts:
   - address: 192.168.1.49
@@ -477,19 +454,10 @@ spec:
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachineDeployment
 metadata:
-  annotations:
-    machinedeployment.clusters.x-k8s.io/revision: "1"
-  finalizers:
-  - cluster.x-k8s.io/machinedeployment
   labels:
     cluster.x-k8s.io/cluster-name: nkp-2-17
   name: nkp-2-17-md-0
   namespace: default
-  ownerReferences:
-  - apiVersion: cluster.x-k8s.io/v1beta1
-    kind: Cluster
-    name: nkp-2-17
-    uid: 08db5548-7325-45d4-886a-3e35bc22ce3d
 spec:
   clusterName: nkp-2-17
   minReadySeconds: 0
@@ -530,11 +498,6 @@ kind: PreprovisionedMachineTemplate
 metadata:
   name: nkp-2-17-md-0
   namespace: default
-  ownerReferences:
-  - apiVersion: cluster.x-k8s.io/v1beta1
-    kind: Cluster
-    name: nkp-2-17
-    uid: 08db5548-7325-45d4-886a-3e35bc22ce3d
 spec:
   template:
     spec:
@@ -547,11 +510,6 @@ kind: KubeadmConfigTemplate
 metadata:
   name: nkp-2-17-md-0
   namespace: default
-  ownerReferences:
-  - apiVersion: cluster.x-k8s.io/v1beta1
-    kind: Cluster
-    name: nkp-2-17
-    uid: 08db5548-7325-45d4-886a-3e35bc22ce3d
 spec:
   template:
     metadata: {}
@@ -702,8 +660,6 @@ spec:
 apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
 metadata:
-  finalizers:
-  - addons.cluster.x-k8s.io
   labels:
     konvoy.d2iq.io/cluster-name: nkp-2-17
   name: calico-cni-installation-nkp-2-17
@@ -759,11 +715,6 @@ kind: ConfigMap
 metadata:
   name: calico-cni-installation-nkp-2-17
   namespace: default
-  ownerReferences:
-  - apiVersion: addons.cluster.x-k8s.io/v1beta1
-    kind: ClusterResourceSet
-    name: calico-cni-installation-nkp-2-17
-    uid: 506b0467-3346-4cf0-a282-2a1093abbf8f
 ---
 apiVersion: v1
 data:
@@ -773,17 +724,10 @@ kind: ConfigMap
 metadata:
   name: tigera-operator-nkp-2-17
   namespace: default
-  ownerReferences:
-  - apiVersion: addons.cluster.x-k8s.io/v1beta1
-    kind: ClusterResourceSet
-    name: calico-cni-installation-nkp-2-17
-    uid: 506b0467-3346-4cf0-a282-2a1093abbf8f
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
 metadata:
-  finalizers:
-  - addons.cluster.x-k8s.io
   labels:
     konvoy.d2iq.io/cluster-name: nkp-2-17
   name: local-volume-provisioner-nkp-2-17
@@ -926,17 +870,10 @@ kind: ConfigMap
 metadata:
   name: local-volume-provisioner-nkp-2-17
   namespace: default
-  ownerReferences:
-  - apiVersion: addons.cluster.x-k8s.io/v1beta1
-    kind: ClusterResourceSet
-    name: local-volume-provisioner-nkp-2-17
-    uid: 5171aea6-cd59-4109-afb9-01f8a8d8ec34
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
 metadata:
-  finalizers:
-  - addons.cluster.x-k8s.io
   labels:
     konvoy.d2iq.io/cluster-name: nkp-2-17
   name: cosi-controller-nkp-2-17
@@ -1644,17 +1581,10 @@ kind: ConfigMap
 metadata:
   name: cosi-controller-nkp-2-17
   namespace: default
-  ownerReferences:
-  - apiVersion: addons.cluster.x-k8s.io/v1beta1
-    kind: ClusterResourceSet
-    name: cosi-controller-nkp-2-17
-    uid: 12c0932f-f696-4762-be07-39072ed78f7a
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
 metadata:
-  finalizers:
-  - addons.cluster.x-k8s.io
   labels:
     konvoy.d2iq.io/cluster-name: nkp-2-17
   name: node-feature-discovery-nkp-2-17
@@ -3047,17 +2977,10 @@ kind: ConfigMap
 metadata:
   name: node-feature-discovery-nkp-2-17
   namespace: default
-  ownerReferences:
-  - apiVersion: addons.cluster.x-k8s.io/v1beta1
-    kind: ClusterResourceSet
-    name: node-feature-discovery-nkp-2-17
-    uid: 813df561-d0d5-4e1b-a9d6-002c60e5fd89
 ---
 apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
 metadata:
-  finalizers:
-  - addons.cluster.x-k8s.io
   labels:
     app: metallb
     konvoy.d2iq.io/cluster-name: nkp-2-17
@@ -5272,8 +5195,3 @@ metadata:
     konvoy.d2iq.io/cluster-name: nkp-2-17
   name: metallb-installation-nkp-2-17
   namespace: default
-  ownerReferences:
-  - apiVersion: addons.cluster.x-k8s.io/v1beta1
-    kind: ClusterResourceSet
-    name: metallb-nkp-2-17
-    uid: 1f696902-f8a3-4c72-8c89-535d08cd7aa7
