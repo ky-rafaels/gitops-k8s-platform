@@ -1,0 +1,46 @@
+# values.yaml
+gitea:
+  admin:
+    username: admin
+    password: changeme
+    email: kyle.rafaels@nutanix.com 
+
+  config:
+    server:
+      DOMAIN: gitea.example.com
+      ROOT_URL: https://gitea.example.com
+      HTTP_PORT: 3000
+
+service:
+  http:
+    type: ClusterIP
+    port: 3000
+  ssh:
+    type: ClusterIP
+    port: 22
+
+ingress:
+  enabled: true
+  className: kommander-traefik          # tells K8s to use your Traefik IngressClass
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    # If using cert-manager:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: gitea.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: gitea-tls
+      hosts:
+        - gitea.example.com
+
+persistence:
+  enabled: true
+  size: 10Gi
+  # storageClass: "your-storage-class"  # optional
+
+postgresql-ha:
+  enabled: false 

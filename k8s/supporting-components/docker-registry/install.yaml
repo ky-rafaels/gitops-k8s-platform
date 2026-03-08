@@ -1,0 +1,125 @@
+# namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: registry
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: registry-pvc
+  namespace: registry
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: localvolumeprovisioner
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: docker-registry
+  namespace: registry
+  labels:
+    app: docker-registry
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: docker-registry
+  template:
+    metadata:
+      labels:
+        app: docker-registry
+    spec:
+      containers:
+        - name: registry
+          image: registry:2
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY
+              value: /var/lib/registry
+            - name: REGISTRY_HTTP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: registry-secret
+                  key: http-secret
+          volumeMounts:
+            - name: registry-storage
+              mountPath: /var/lib/registry
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /v2/
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /v2/
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 20
+      volumes:
+        - name: registry-storage
+          persistentVolumeClaim:
+            claimName: registry-pvc
+---
+# service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: docker-registry
+  namespace: registry
+spec:
+  selector:
+    app: docker-registry
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP  # use LoadBalancer or NodePort if external access is needed
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry-secret
+  namespace: registry
+type: Opaque
+stringData:
+  http-secret: "nutanix/4u"
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: docker-registry
+#   namespace: registry
+#   annotations:
+#     cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
+#     traefik.ingress.kubernetes.io/router.entrypoints: websecure
+# spec:
+#   ingressClassName: traefik
+#   tls:
+#     - hosts:
+#         - registry.internal.example.com
+#       secretName: registry-tls
+#   rules:
+#     - host: registry.internal.example.com
+#       http:
+#         paths:
+#           - path: /
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: docker-registry
+#                 port:
+#                   number: 5000
