@@ -14,7 +14,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 50Gi
+      storage: 100Gi
   storageClassName: localvolumeprovisioner
 ---
 apiVersion: apps/v1
@@ -97,29 +97,29 @@ metadata:
 type: Opaque
 stringData:
   http-secret: "nutanix/4u"
-# ---
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: docker-registry
-#   namespace: registry
-#   annotations:
-#     cert-manager.io/cluster-issuer: "selfsigned-cluster-issuer"
-#     traefik.ingress.kubernetes.io/router.entrypoints: websecure
-# spec:
-#   ingressClassName: traefik
-#   tls:
-#     - hosts:
-#         - registry.internal.example.com
-#       secretName: registry-tls
-#   rules:
-#     - host: registry.internal.example.com
-#       http:
-#         paths:
-#           - path: /
-#             pathType: Prefix
-#             backend:
-#               service:
-#                 name: docker-registry
-#                 port:
-#                   number: 5000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: docker-registry
+  namespace: registry
+  annotations:
+    cert-manager.io/cluster-issuer: "kommander-ca"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+spec:
+  ingressClassName: kommander-traefik
+  tls:
+    - hosts:
+        - registry.internal.example.com
+      secretName: registry-tls
+  rules:
+    - host: registry.internal.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: docker-registry
+                port:
+                  number: 5000

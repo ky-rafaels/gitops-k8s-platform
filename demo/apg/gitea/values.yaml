@@ -2,7 +2,7 @@
 gitea:
   admin:
     username: admin
-    password: changeme
+    password: nutanix/4u 
     email: kyle.rafaels@nutanix.com 
 
   config:
